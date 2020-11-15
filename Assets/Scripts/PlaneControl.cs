@@ -1,0 +1,152 @@
+﻿
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using UnityEngine;
+
+
+
+public class PlaneControl : MonoBehaviour
+{
+    public int speed = 20;
+    public int forcePumpL = 4;
+    public int tmp = 4;
+    private Rigidbody rb;
+
+    private float horizontal = 0f;
+    private float vertical = 0f;
+
+    private Vector3 originPos = new Vector3(-0.6f, 2.2f, 0);
+    private Vector3 flyingPos = new Vector3(-0.6f, 3.6f, 0);
+
+    private Quaternion originRot;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezePositionZ;
+
+        originRot = transform.rotation;
+        transform.position = originPos;
+        // originPos = transform.position;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+
+        switch (Interface.state) {
+            case AviatorState.Rising:
+                rise();
+                break;
+            case AviatorState.Flying:
+                updateFlying();
+                break;
+            case AviatorState.Falling:
+                fall();
+                break;
+        }
+
+    }
+
+    void updateFlying()
+    {
+
+        // GetAxisRaw has changes from 0 to 1 or -1 immediately, so with no steps.
+        if (Input.GetAxisRaw("Vertical") != 0) {
+            vertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
+        }
+
+        else if (Input.GetAxisRaw("Mouse Y") != 0) {
+            vertical = Input.GetAxis("Mouse Y") * speed * 5 * Time.deltaTime;
+        }
+        else {
+            // to stop when press released
+            vertical = 0f;
+        }
+
+        if (transform.position.x != originPos.x) {
+            horizontal = originPos.x - transform.position.x;
+        }
+
+        // boundaries
+        transform.position = new Vector3(Mathf.Max(-1.3f, Mathf.Min(0, transform.position.x)),
+                            Mathf.Max(3.2f, Mathf.Min(4.5f, transform.position.y)),
+                            0);
+
+
+        // update velocity
+        rb.velocity = new Vector3(horizontal, vertical, 0);
+        // rb.rotation = originRot;
+    }
+
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "stone") {
+            Interface.energy -= 10;
+            rb.freezeRotation = true;
+            // rb.AddForce(-forcePumpL, -forcePumpD, 0, ForceMode.Impulse);
+            rb.AddExplosionForce(forcePumpL, other.transform.position, 1, 0, ForceMode.Impulse);
+            rb.freezeRotation = false;
+            Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.tag == "coin") {
+            Interface.score += 10;
+            Destroy(other.gameObject);
+        }
+
+    }
+
+    // void OnCollisionEnter(Collision other) {
+    //     if (other.gameObject.tag == "stone") {
+    //         Interface.energy -= 10;
+    //         rb.freezeRotation = true;
+    //         // rb.AddForce(-forcePumpL, -forcePumpD, 0, ForceMode.Impulse);
+    //         rb.AddExplosionForce(4, other.collider.transform)
+    //         Destroy(other.gameObject);
+    //     }
+    // }
+
+
+    #region public methods
+    public void rise()
+    {
+        if (transform.position.y > flyingPos.y) {
+            rb.velocity = Vector3.zero;
+            transform.position = flyingPos;
+            Interface.state = AviatorState.Flying;
+        } else {
+            rb.velocity = new Vector3(0, rb.velocity.y, 0);
+            rb.AddForce(Vector3.up * 6);
+        }
+    }
+
+    public void fall()
+    {
+        // rb.velocity = Vector3.zero;
+
+        if (transform.position.y < originPos.y) {
+            rb.velocity = Vector3.zero;
+            transform.position = originPos;
+            Interface.state = AviatorState.Start;
+
+            // transform.position = new Vector3(originPos.x, );
+
+        } else {
+            // rb.constraints = RigidbodyConstraints.FreezePositionX;
+            rb.velocity = new Vector3(0, rb.velocity.y, 0);
+            rb.AddForce(Vector3.down * 6);
+
+            // rb.AddTorque(new Vector3(0, 0, 45), ForceMode.Acceleration);
+
+            // new WaitForSeconds(1);
+
+        }
+    }
+    #endregion
+
+}
