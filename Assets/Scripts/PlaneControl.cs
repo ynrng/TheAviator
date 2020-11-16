@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 
 
 public class PlaneControl : MonoBehaviour
 {
-    public int speed = 20;
+    public int speed = 5;
     public int forcePumpL = 4;
     public int tmp = 4;
     private Rigidbody rb;
@@ -53,17 +54,23 @@ public class PlaneControl : MonoBehaviour
 
     void updateFlying()
     {
-
+        // legacy input sys
         // GetAxisRaw has changes from 0 to 1 or -1 immediately, so with no steps.
-        if (Input.GetAxisRaw("Vertical") != 0) {
-            vertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
-        }
+        // if (Input.GetAxisRaw("Vertical") != 0) {
+        //     vertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
+        // }
 
-        else if (Input.GetAxisRaw("Mouse Y") != 0) {
-            vertical = Input.GetAxis("Mouse Y") * speed * 5 * Time.deltaTime;
-        }
-        else {
+        // else if (Input.GetAxisRaw("Mouse Y") != 0) {
+        //     vertical = Input.GetAxis("Mouse Y") * speed * 5 * Time.deltaTime;
+        // }
+        // else {
+
+        if (Touch.activeTouches.Count == 1 && Touch.activeTouches[0].isInProgress) {
+            rb.useGravity = false;
+            vertical = Touch.activeTouches[0].delta.y * speed * Time.deltaTime;
+        } else {
             // to stop when press released
+            rb.useGravity = true;
             vertical = 0f;
         }
 
@@ -89,7 +96,7 @@ public class PlaneControl : MonoBehaviour
             Interface.energy -= 10;
             rb.freezeRotation = true;
             // rb.AddForce(-forcePumpL, -forcePumpD, 0, ForceMode.Impulse);
-            rb.AddExplosionForce(forcePumpL, other.transform.position, 1, 0, ForceMode.Impulse);
+            rb.AddExplosionForce(forcePumpL, other.transform.position, 1, -1, ForceMode.Impulse);
             rb.freezeRotation = false;
             Destroy(other.gameObject);
         }
@@ -100,17 +107,6 @@ public class PlaneControl : MonoBehaviour
         }
 
     }
-
-    // void OnCollisionEnter(Collision other) {
-    //     if (other.gameObject.tag == "stone") {
-    //         Interface.energy -= 10;
-    //         rb.freezeRotation = true;
-    //         // rb.AddForce(-forcePumpL, -forcePumpD, 0, ForceMode.Impulse);
-    //         rb.AddExplosionForce(4, other.collider.transform)
-    //         Destroy(other.gameObject);
-    //     }
-    // }
-
 
     #region public methods
     public void rise()
@@ -128,8 +124,9 @@ public class PlaneControl : MonoBehaviour
     public void fall()
     {
         // rb.velocity = Vector3.zero;
-
+        rb.useGravity = false;
         if (transform.position.y < originPos.y) {
+
             rb.velocity = Vector3.zero;
             transform.position = originPos;
             Interface.state = AviatorState.Start;

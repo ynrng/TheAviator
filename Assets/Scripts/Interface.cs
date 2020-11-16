@@ -1,6 +1,9 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class Interface : MonoBehaviour
 {
@@ -30,7 +33,7 @@ public class Interface : MonoBehaviour
         // texts[1].text = String.Format("Level {0}, Score {1}/{2}", level, score, 100);
         texts[1].text = String.Format("Energy {0}/{1}", energy, 100);
 
-        if (state == AviatorState.Start && Input.GetButtonDown("Jump")) {
+        if (state == AviatorState.Start && InputManager.isTapping()) {
 
             initVars();
             generator.startCoroutines();
@@ -47,6 +50,8 @@ public class Interface : MonoBehaviour
             // plane.fall();
         }
     }
+
+
 
     void initVars()
     {
