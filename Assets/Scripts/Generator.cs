@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO.Compression;
+using UnityEditor;
 using UnityEngine;
 
 public class Generator : MonoBehaviour {
     // Start is called before the first frame update
 
-    public GameObject[] prefebsNone;
-    public GameObject[] prefebsCoin;
-    public GameObject[] prefebsStone;
+    public GameObject[] prefebsNone = new GameObject[1];
+    public GameObject[] prefebsCoin = new GameObject[1];
+    public GameObject[] prefebsStone = new GameObject[1];
 
     private float currentX;
 
@@ -19,9 +20,20 @@ public class Generator : MonoBehaviour {
 
     void Start()
     {
+
+        // PrefabUtility.GetPrefabObject;
+        // Instantiate(PrefabUtility.fi).
+        GameObject heli = Resources.Load<GameObject>("Prefabs/Heli");
+        Instantiate(heli);
+
+        prefebsNone[0] = Resources.Load<GameObject>("Prefabs/Cube");
+        prefebsCoin[0] = Resources.Load<GameObject>("Prefabs/Coin");
+        prefebsStone[0] = Resources.Load<GameObject>("Prefabs/Stone");
+
         ienums[0] = generateCubes();
         ienums[1] = generateCoins();
         ienums[2] = generateStones();
+
         StartCoroutine(ienums[0]);
 
         // foreach (IEnumerator item in ienums) {
