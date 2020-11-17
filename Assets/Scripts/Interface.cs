@@ -10,7 +10,8 @@ public class Interface : MonoBehaviour
     static public int score = 0;
     static public int distance = 0;
     static public int energy = 30;
-    static public AviatorStates state = AviatorStates.Start;
+    static public AviatorStates state = AviatorStates.Flying;//todo
+
 
     private int level = 1;
     private Text[] texts;
