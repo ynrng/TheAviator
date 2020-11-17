@@ -6,6 +6,8 @@ TagManager:
   tags:
   - coin
   - stone
+  - target
+  - sky
   layers:
   - Default
   - TransparentFX

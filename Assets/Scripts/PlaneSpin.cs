@@ -15,12 +15,12 @@ public class PlaneSpin : MonoBehaviour
     {
         switch (Interface.state)
         {
-            case AviatorState.Flying:
+            case AviatorStates.Flying:
                 transform.Rotate(0, 0, transform.position.z + speed * Time.deltaTime);
             break;
-                // case AviatorState.End:
-                // todo
-                // break;
+            // case AviatorStates.End:
+            // todo
+            // break;
             default:
             break;
         }

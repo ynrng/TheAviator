@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class Spinning : MonoBehaviour
 {
     // Start is called before the first frame update
-    public int speed = 100;
+    public int spinSpeed = 30;
+    public int spinAroundSpeed = 20;
     void Start()
     {
 
@@ -17,7 +19,8 @@ public class Spinning : MonoBehaviour
         if (transform.position.y < 0 && transform.position.x < 0) {
             Destroy(gameObject);
         } else {
-            transform.RotateAround(Vector3.zero, Vector3.forward, speed * Time.deltaTime);
+            transform.Rotate(Vector3.one * spinSpeed * Random.value * Time.deltaTime);
+            transform.RotateAround(Vector3.zero, Vector3.forward, spinAroundSpeed * Time.deltaTime);
         }
     }
 }

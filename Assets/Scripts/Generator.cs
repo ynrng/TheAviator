@@ -47,19 +47,20 @@ public class Generator : MonoBehaviour {
     {
         // Y:2.5-3.5
         // x: -3.5 screen left
-        new WaitForSeconds(Random.Range(0, 3));
+        // new WaitForSeconds(Random.Range(0, 3));
         while (true) {
 
             // GameObject parentCube = new GameObject("parentCube");
-            float x = Random.Range(3f, 5f);
-            float z = Random.Range(0f, 2f);
-            for (int i = 0; i < Random.Range(1, 6); i++) {
+            float x = Random.Range(300f, 380f);
+            float z = Random.Range(250f, 330f);
+            for (int i = 0; i < 3 + Random.Range(0, 3); i++) {
 
                 GameObject iCube =
                 Instantiate(prefebsNone[Random.Range(0, prefebsNone.Length)],
-                            new Vector3(x, i * 0.15f, z),
+                            new Vector3(x + Random.Range(0f, 10f), i * 15f, z + Random.Range(0f, 10f)),
                             Random.rotation
                             );
+                iCube.transform.localScale *= (.5f + Random.Range(0, .5f));
                 iCube.transform.parent = gameObject.transform;
             }
             yield return new WaitForSeconds(Random.Range(1, 4));

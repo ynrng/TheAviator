@@ -39,13 +39,13 @@ public class PlaneControl : MonoBehaviour
 
 
         switch (Interface.state) {
-            case AviatorState.Rising:
+            case AviatorStates.Rising:
                 rise();
                 break;
-            case AviatorState.Flying:
+            case AviatorStates.Flying:
                 updateFlying();
                 break;
-            case AviatorState.Falling:
+            case AviatorStates.Falling:
                 fall();
                 break;
         }
@@ -114,7 +114,7 @@ public class PlaneControl : MonoBehaviour
         if (transform.position.y > flyingPos.y) {
             rb.velocity = Vector3.zero;
             transform.position = flyingPos;
-            Interface.state = AviatorState.Flying;
+            Interface.state = AviatorStates.Flying;
         } else {
             rb.velocity = new Vector3(0, rb.velocity.y, 0);
             rb.AddForce(Vector3.up * 6);
@@ -129,7 +129,7 @@ public class PlaneControl : MonoBehaviour
 
             rb.velocity = Vector3.zero;
             transform.position = originPos;
-            Interface.state = AviatorState.Start;
+            Interface.state = AviatorStates.Start;
 
             // transform.position = new Vector3(originPos.x, );
 

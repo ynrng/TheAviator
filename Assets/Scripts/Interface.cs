@@ -10,7 +10,7 @@ public class Interface : MonoBehaviour
     static public int score = 0;
     static public int distance = 0;
     static public int energy = 30;
-    static public AviatorState state = AviatorState.Start;
+    static public AviatorStates state = AviatorStates.Start;
 
     private int level = 1;
     private Text[] texts;
@@ -33,19 +33,19 @@ public class Interface : MonoBehaviour
         // texts[1].text = String.Format("Level {0}, Score {1}/{2}", level, score, 100);
         texts[1].text = String.Format("Energy {0}/{1}", energy, 100);
 
-        if (state == AviatorState.Start && InputManager.isTapping()) {
+        if (state == AviatorStates.Start && InputManager.isTapping()) {
 
             initVars();
             generator.startCoroutines();
 
             // new WaitForSeconds(1);
 
-            state = AviatorState.Rising;
+            state = AviatorStates.Rising;
 
             // plane.rise();
         }
-        if (state == AviatorState.Flying && energy <= 0) {
-            state = AviatorState.Falling;
+        if (state == AviatorStates.Flying && energy <= 0) {
+            state = AviatorStates.Falling;
             generator.stopCoroutines();
             // plane.fall();
         }
@@ -58,7 +58,7 @@ public class Interface : MonoBehaviour
         score = 0;
         distance = 0;
         energy = 10;
-        // state = AviatorState.Start;
+        // state = AviatorStates.Start;
         level = 1;
     }
 
