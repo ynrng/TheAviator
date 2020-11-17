@@ -16,11 +16,12 @@ public class Spinning : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.y < 0 && transform.position.x < 0) {
+        if (transform.position.y < -600 && transform.position.x < 0) {
             Destroy(gameObject);
         } else {
             transform.Rotate(Vector3.one * spinSpeed * Random.value * Time.deltaTime);
-            transform.RotateAround(Vector3.zero, Vector3.forward, spinAroundSpeed * Time.deltaTime);
+            // transform.RotateAround(Vector3.zero, Vector3.forward, spinAroundSpeed * Time.deltaTime);
+            transform.RotateAround(Vector3.down * 600, Vector3.forward, spinAroundSpeed * Time.deltaTime);
         }
     }
 }

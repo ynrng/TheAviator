@@ -5,7 +5,6 @@ using UnityEngine;
 public class DrawAirPlane : MonoBehaviour {
     // Start is called before the first frame update
     GameObject parent;
-    Material material;
     void Start()
     {
         parent = new GameObject("AirPlane");
@@ -22,7 +21,7 @@ public class DrawAirPlane : MonoBehaviour {
         propeller.transform.position = new Vector3(50, 0, 0);
         propeller.AddComponent<PlaneSpin>();
 
-        parent.transform.position = Vector3.up * 200; // 100
+        parent.transform.position = Vector3.up * 100;
         parent.transform.localScale = Vector3.one * .25f;
 
     }

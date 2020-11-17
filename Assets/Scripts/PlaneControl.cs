@@ -65,6 +65,8 @@ public class PlaneControl : MonoBehaviour
         // }
         // else {
 
+
+
         if (Touch.activeTouches.Count == 1 && Touch.activeTouches[0].isInProgress) {
             rb.useGravity = false;
             vertical = Touch.activeTouches[0].delta.y * speed * Time.deltaTime;
@@ -79,9 +81,11 @@ public class PlaneControl : MonoBehaviour
         }
 
         // boundaries
-        transform.position = new Vector3(Mathf.Max(-1.3f, Mathf.Min(0, transform.position.x)),
-                            Mathf.Max(3.2f, Mathf.Min(4.5f, transform.position.y)),
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -1.3f, 0f),
+                            Mathf.Clamp(transform.position.y, 3.2f, 4.5f),
                             0);
+
+
 
 
         // update velocity

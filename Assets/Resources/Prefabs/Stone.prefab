@@ -28,8 +28,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6026447994428344166}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
-  m_LocalScale: {x: 13, y: 13, z: 13}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6026447994428344166}
-  m_Mesh: {fileID: 6935877506589290101, guid: 0b9f7002da3e346cd86a74dc5e4495bc, type: 3}
+  m_Mesh: {fileID: 5375885880443541675, guid: 0b9f7002da3e346cd86a74dc5e4495bc, type: 3}
 --- !u!23 &5233960075754464947
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -106,4 +106,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e69feedc7ad4a1d92ea77c1de1a641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
+  spinSpeed: 100
+  spinAroundSpeed: 100

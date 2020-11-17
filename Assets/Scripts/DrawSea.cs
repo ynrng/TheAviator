@@ -2,49 +2,79 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum BlendMode {
+    Opaque,
+    Cutout,
+    Fade,   // Old school alpha-blending mode, fresnel does not affect amount of transparency
+    Transparent // Physically plausible transparency mode, implemented as alpha pre-multiply
+}
+
 public class DrawSea : MonoBehaviour {
     // Start is called before the first frame update
-    GameObject parent;
-    Material material;
+    // GameObject parent;
     void Start()
     {
-        parent = new GameObject("AirPlane");
-        parent.transform.parent = gameObject.transform;
 
-        createCubeWithName("Cabin", new Vector3(60, 50, 50), Vector3.zero, AviatorColors.Red);
-        createCubeWithName("Engine", new Vector3(20, 50, 50), Vector3.right * 40, AviatorColors.White);
-        createCubeWithName("Tail", new Vector3(15, 20, 5), new Vector3(-35, 25, 0), AviatorColors.Red);
-        createCubeWithName("SideWing", new Vector3(40, 8, 150), Vector3.zero, AviatorColors.Red);
-        GameObject propeller = createCubeWithName("Propeller", new Vector3(20, 10, 10), Vector3.zero, AviatorColors.Brown);
-        GameObject blade = createCubeWithName("Blades", new Vector3(1, 100, 20), new Vector3(8, 0, 0), AviatorColors.BrownDark);
-        //    GameObject blade2 = Instantiate(blade1, )
-        blade.transform.parent = propeller.transform;
-        propeller.transform.position = new Vector3(50, 0, 0);
-        propeller.AddComponent<PlaneSpin>();
-
-        parent.transform.position = Vector3.up * 200; // 100
-        parent.transform.localScale = Vector3.one * .25f;
+        createSky();
+        createSea();
 
     }
 
-    GameObject createCubeWithName(string name, Vector3 localScale, Vector3 position, Color color)
+    GameObject createSky()
     {
-
-        //1) Create an empty GameObject with the required Components
-        GameObject engineGo = PrimitiveHelper.CreatePrimitive(PrimitiveType.Cube, false, name);
+        GameObject skyGo = PrimitiveHelper.CreatePrimitive(PrimitiveType.Quad, false, "Sky");
         // Mesh meshCube =  PrimitiveHelper.GetPrimitiveMesh(PrimitiveType.Cube);
 
-        engineGo.transform.localScale = localScale;
-        engineGo.transform.position = position;
-        engineGo.transform.parent = parent.transform;
+        skyGo.transform.position = new Vector3(0, 200, 400);
+        skyGo.transform.localScale = new Vector3(1300, 1000, 1);
+        skyGo.transform.parent = gameObject.transform;
 
         //9) Give it a Material
         // Material material = new Material(PrimitiveHelper.GetMaterialStandard());
-        Material engineMa = engineGo.GetComponent<MeshRenderer>().material;
-        // todo should Material be saved for future use;
-        engineMa.SetColor("_Color", color);
+        Material skyMa = new Material(Shader.Find("Aviator/LinearGradientColor"));
+        skyMa.SetColor("_color1", AviatorColors.Sky);
+        skyMa.SetColor("_color2", AviatorColors.Fog);
+        skyGo.GetComponent<MeshRenderer>().material = skyMa;
 
-        return engineGo;
+        return skyGo;
+    }
+
+    GameObject createSea()
+    {// parent = new GameObject("Sea");
+        // parent.transform.parent = gameObject.transform;
+
+        //1) Create an empty GameObject with the required Components
+        GameObject seaGo = PrimitiveHelper.CreatePrimitive(PrimitiveType.Cylinder, false, "Sea");
+        // Mesh meshCube =  PrimitiveHelper.GetPrimitiveMesh(PrimitiveType.Cube);
+
+        seaGo.transform.position = Vector3.up * -600;
+        seaGo.transform.Rotate(Vector3.right * -90);
+        seaGo.transform.localScale = new Vector3(1200, 400, 1200);
+        seaGo.transform.parent = gameObject.transform;
+
+        //9) Give it a Material
+        // Material material = new Material(PrimitiveHelper.GetMaterialStandard());
+        // Material seaMa = new Material(seaGo.GetComponent<MeshRenderer>().material);
+        Material seaMa = seaGo.GetComponent<MeshRenderer>().material;
+        seaMa.SetColor("_Color", AviatorColors.Blue);
+        // todo should Material be saved for future use;
+
+        // [ref](https://docs.unity3d.com/2019.4/Documentation/Manual/StandardShaderMaterialParameterRenderingMode.html)
+        #region set rendering mode to transparent
+        seaMa.SetInt("_Mode", (int)BlendMode.Transparent);
+        seaMa.SetOverrideTag("RenderType", "Transparent");
+        seaMa.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+        seaMa.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        seaMa.SetInt("_ZWrite", 0);
+        seaMa.DisableKeyword("_ALPHATEST_ON");
+        seaMa.DisableKeyword("_ALPHABLEND_ON");
+        seaMa.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+        seaMa.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+        #endregion
+        // seaGo.GetComponent<MeshRenderer>().material = seaMa;
+
+        return seaGo;
     }
 
     // Update is called once per frame

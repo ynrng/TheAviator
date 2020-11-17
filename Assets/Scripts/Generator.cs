@@ -13,6 +13,7 @@ public class Generator : MonoBehaviour {
     public GameObject[] prefebsStone = new GameObject[1];
 
     private float currentX;
+    private GameObject parent;
 
     private IEnumerator[] ienums = new IEnumerator[3];
 
@@ -23,8 +24,8 @@ public class Generator : MonoBehaviour {
 
         // PrefabUtility.GetPrefabObject;
         // Instantiate(PrefabUtility.fi).
-        GameObject heli = Resources.Load<GameObject>("Prefabs/Heli");
-        Instantiate(heli);
+        // GameObject heli = Resources.Load<GameObject>("Prefabs/Heli");
+        // Instantiate(heli);
 
         prefebsNone[0] = Resources.Load<GameObject>("Prefabs/Cube");
         prefebsCoin[0] = Resources.Load<GameObject>("Prefabs/Coin");
@@ -45,25 +46,30 @@ public class Generator : MonoBehaviour {
 
     IEnumerator generateCubes()
     {
-        // Y:2.5-3.5
-        // x: -3.5 screen left
-        // new WaitForSeconds(Random.Range(0, 3));
+
         while (true) {
 
-            // GameObject parentCube = new GameObject("parentCube");
-            float x = Random.Range(300f, 380f);
-            float z = Random.Range(250f, 330f);
+            // GameObject parent = new GameObject("Cloud");
+            // var stepAngle = Math.PI * 2 / 20;
+            float x = 600 + 150 + Random.Range(0f, 100f); // 100-250
+            float z = 200 + Random.Range(0f, 200);//200-400
+            float y = -600f;
+            float scale = (1 + Random.Range(0, 1f)) * 20;
             for (int i = 0; i < 3 + Random.Range(0, 3); i++) {
 
                 GameObject iCube =
                 Instantiate(prefebsNone[Random.Range(0, prefebsNone.Length)],
-                            new Vector3(x + Random.Range(0f, 10f), i * 15f, z + Random.Range(0f, 10f)),
+                            new Vector3(x - Random.Range(0f, 10f), y + i * 25f, z - Random.Range(0f, 10f)),
                             Random.rotation
                             );
-                iCube.transform.localScale *= (.5f + Random.Range(0, .5f));
+                iCube.transform.localScale *= (.5f + Random.Range(0, .5f)) * scale; //	var s = .1 + Math.random()*.9;
                 iCube.transform.parent = gameObject.transform;
             }
-            yield return new WaitForSeconds(Random.Range(1, 4));
+            // parent.transform.localScale *= 1 + Random.Range(0, 2f);
+            // parent.transform.Translate(Vector3.down * 600);
+            // parent.transform.parent = gameObject.transform;
+
+            yield return new WaitForSeconds(Random.Range(2, 4));
         }
     }
 
