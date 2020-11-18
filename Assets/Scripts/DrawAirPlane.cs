@@ -7,6 +7,18 @@ public class DrawAirPlane : MonoBehaviour {
     GameObject parent;
     void Start()
     {
+        createAirplane();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    #region drawing functions
+
+    public GameObject createAirplane(){
         parent = new GameObject("AirPlane");
         parent.transform.parent = gameObject.transform;
         // todo remember to add rigidbody to parent
@@ -23,8 +35,58 @@ public class DrawAirPlane : MonoBehaviour {
         propeller.transform.position = new Vector3(50, 0, 0);
         propeller.AddComponent<PlaneSpin>();
 
+        //DrawPilot
+        createPilot();
+
+        //after all parts drawn;
         parent.transform.position = Vector3.up * 100;
         parent.transform.localScale = Vector3.one * .25f;
+
+        return parent;
+    }
+    public GameObject createPilot()
+    {
+
+        GameObject pilotGo = new GameObject("Pilot");
+
+        createCubeWithName("Body", Vector3.one * 15, new Vector3(2, -12, 0), AviatorColors.Brown, pilotGo);
+        createCubeWithName("Face", Vector3.one * 10, Vector3.zero, AviatorColors.Pink, pilotGo);
+
+        // MeshLambertMaterial => consider Shader: Mobile/Diffuse
+        createCubeWithName("GlassR", Vector3.one * 5, new Vector3(6, 0, -3), AviatorColors.Brown, pilotGo);
+        createCubeWithName("GlassL", Vector3.one * 5, new Vector3(6, 0, 3), AviatorColors.Brown, pilotGo);
+        createCubeWithName("GlassA", new Vector3(6, 0, 3), Vector3.zero, AviatorColors.Brown, pilotGo);
+
+        createCubeWithName("EarL", new Vector3(2, 3, 3), new Vector3(0, 0, -6), AviatorColors.Pink, pilotGo);
+        createCubeWithName("EarR", new Vector3(2, 3, 3), new Vector3(0, 0, 6), AviatorColors.Pink, pilotGo);
+
+        // hairs
+        GameObject hairsGo = new GameObject("Hairs");
+        createCubeWithName("SideL", new Vector3(12, 4, 2), new Vector3(8 - 6, -2, 6), AviatorColors.Brown, hairsGo);
+        createCubeWithName("SideR", new Vector3(12, 4, 2), new Vector3(8 - 6, -2, -6), AviatorColors.Brown, hairsGo);
+        createCubeWithName("Back", new Vector3(2, 8, 10), new Vector3(-1, -4, 0), AviatorColors.Brown, hairsGo);
+
+        GameObject topGo = new GameObject("Top");
+
+        int startPosZ = -4;
+        int startPosX = -4;
+        for (int i = 0; i < 12; i++) {
+            GameObject hairMvGo = createCubeWithName("Move", Vector3.one * 4,
+            new Vector3(startPosX + (i / 3) * 4, 0, startPosZ + (i % 3) * 4), AviatorColors.Brown, topGo);
+            hairMvGo.AddComponent<PilotHair>();
+            hairMvGo.GetComponent<PilotHair>().index = i;
+        }
+
+        topGo.transform.parent = hairsGo.transform;
+
+        hairsGo.transform.position = new Vector3(-5, 5, 0);
+        hairsGo.transform.parent = pilotGo.transform;
+        // hairs end
+
+        pilotGo.transform.position = new Vector3(-10, 27, 0);
+        pilotGo.transform.parent = parent.transform;
+
+        return pilotGo;
 
     }
 
@@ -76,27 +138,29 @@ public class DrawAirPlane : MonoBehaviour {
 
     GameObject createCubeWithName(string name, Vector3 localScale, Vector3 position, Color color)
     {
+        return createCubeWithName(name, localScale, position, color, parent);
+    }
+
+    GameObject createCubeWithName(string name, Vector3 localScale, Vector3 position, Color color, GameObject p)
+    {
 
         //1) Create an empty GameObject with the required Components
         GameObject engineGo = PrimitiveHelper.CreatePrimitive(PrimitiveType.Cube, false, name);
         // Mesh meshCube =  PrimitiveHelper.GetPrimitiveMesh(PrimitiveType.Cube);
 
-        engineGo.transform.localScale = localScale;
-        engineGo.transform.position = position;
-        engineGo.transform.parent = parent.transform;
-
         //9) Give it a Material
-        // Material material = new Material(PrimitiveHelper.GetMaterialStandard());
         Material engineMa = engineGo.GetComponent<MeshRenderer>().material;
         // todo should Material be saved for future use;
+        // but definately create a instance for same color on the same render; like in primitivehelper;
         engineMa.SetColor("_Color", color);
+
+        engineGo.transform.localScale = localScale;
+        engineGo.transform.position = position;
+        engineGo.transform.parent = p.transform;
 
         return engineGo;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+        #endregion
 
-    }
 }
