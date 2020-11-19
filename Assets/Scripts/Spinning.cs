@@ -7,7 +7,6 @@ public class Spinning : MonoBehaviour
 {
     // Start is called before the first frame update
     public int spinSpeed = 30;
-    public int spinAroundSpeed = 20;
     void Start()
     {
 
@@ -16,12 +15,14 @@ public class Spinning : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.y < -600 && transform.position.x < 0) {
+        if (transform.position.y < Aviator.Center && transform.position.x < 0) {
             Destroy(gameObject);
         } else {
-            transform.Rotate(Vector3.one * spinSpeed * Random.value * Time.deltaTime);
+            if (spinSpeed > 0) {
+                transform.Rotate(Vector3.one * spinSpeed * Random.value * Time.deltaTime);
+            }
             // transform.RotateAround(Vector3.zero, Vector3.forward, spinAroundSpeed * Time.deltaTime);
-            transform.RotateAround(Vector3.down * 600, Vector3.forward, spinAroundSpeed * Time.deltaTime);
+            transform.RotateAround(Vector3.up * Aviator.Center, Vector3.forward, Aviator.SpinningSpeed * Time.deltaTime);
         }
     }
 }

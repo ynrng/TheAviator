@@ -43,7 +43,6 @@ public class Generator : MonoBehaviour {
         // }
     }
 
-
     IEnumerator generateCubes()
     {
 
@@ -51,9 +50,9 @@ public class Generator : MonoBehaviour {
 
             // GameObject parent = new GameObject("Cloud");
             // var stepAngle = Math.PI * 2 / 20;
-            float x = 600 + 150 + Random.Range(0f, 100f); // 100-250
+            float x = Mathf.Abs(Aviator.Center) + 150 + Random.Range(0f, 100f); // 100-250
             float z = 200 + Random.Range(0f, 200);//200-400
-            float y = -600f;
+            float y = Aviator.Center;
             float scale = (1 + Random.Range(0, 1f)) * 20;
             for (int i = 0; i < 3 + Random.Range(0, 3); i++) {
 
@@ -66,7 +65,7 @@ public class Generator : MonoBehaviour {
                 iCube.transform.parent = gameObject.transform;
             }
             // parent.transform.localScale *= 1 + Random.Range(0, 2f);
-            // parent.transform.Translate(Vector3.down * 600);
+            // parent.transform.Translate(Vector3.up * AviatorVariables.Center);
             // parent.transform.parent = gameObject.transform;
 
             yield return new WaitForSeconds(Random.Range(2, 4));
@@ -127,7 +126,6 @@ public class Generator : MonoBehaviour {
             yield return new WaitForSeconds(Random.Range(4, 6));
         }
     }
-
 
     #region public methods
     public void stopCoroutines()

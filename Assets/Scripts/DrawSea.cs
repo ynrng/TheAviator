@@ -58,11 +58,11 @@ public class DrawSea : MonoBehaviour {
         cylinder.segmentsRadial = 40;
         // Mesh meshCube =  PrimitiveHelper.GetPrimitiveMesh(PrimitiveType.Cube);
 
-        seaGo.transform.position = Vector3.up * -600;
+        seaGo.transform.position = Vector3.up * Aviator.Center;
         seaGo.transform.Rotate(Vector3.right * -90);
         // seaGo.transform.localScale = new Vector3(1200, 400, 1200); // for unity built-in PrimitiveType.Cylinder
         // remember to divide y by cylinder.segmentsHeight
-        seaGo.transform.localScale = new Vector3(600, 800 / cylinder.segmentsHeight, 600); // for self-built DrawCylinder
+        seaGo.transform.localScale = new Vector3(Aviator.Center, 800 / cylinder.segmentsHeight, Aviator.Center); // for self-built DrawCylinder
         seaGo.transform.parent = gameObject.transform;
 
         //9) Give it a Material

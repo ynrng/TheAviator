@@ -34,3 +34,9 @@ public struct AviatorColors {
     }
 
 }
+
+public struct Aviator {
+    public static float SpinningSpeed = 20f;
+    public static int Center = -600;
+
+}

@@ -28,7 +28,6 @@ public class Sea : MonoBehaviour {
     public List<Vector3> vertices;
     List<int>[] points;
     List<Wave> waves = new List<Wave>();
-    public float speed = 20f;
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +73,6 @@ public class Sea : MonoBehaviour {
         mesh.vertices = vertices.ToArray();
         mesh.RecalculateNormals();
 
-        gameObject.transform.Rotate(Vector3.down * speed * Time.deltaTime);// .005;
+        gameObject.transform.Rotate(Vector3.down * Aviator.SpinningSpeed * Time.deltaTime);// .005;
     }
 }
