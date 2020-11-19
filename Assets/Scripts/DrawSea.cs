@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public enum BlendMode {
     Opaque,
     Cutout,
@@ -21,6 +20,12 @@ public class DrawSea : MonoBehaviour {
 
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+    #region drawing
     GameObject createSky()
     {
         GameObject skyGo = PrimitiveHelper.CreatePrimitive(PrimitiveType.Quad, false, "Sky");
@@ -76,10 +81,6 @@ public class DrawSea : MonoBehaviour {
 
         return seaGo;
     }
+    #endregion
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

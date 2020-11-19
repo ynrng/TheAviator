@@ -5,8 +5,7 @@ using System.Data;
 using UnityEngine;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
-
-
+[RequireComponent(typeof(Rigidbody))]// required component on the gameObject
 public class PlaneControl : MonoBehaviour
 {
     public int speed = 5;
@@ -37,7 +36,6 @@ public class PlaneControl : MonoBehaviour
     void Update()
     {
 
-
         switch (Interface.state) {
             case AviatorStates.Rising:
                 rise();
@@ -65,8 +63,6 @@ public class PlaneControl : MonoBehaviour
         // }
         // else {
 
-
-
         if (Touch.activeTouches.Count == 1 && Touch.activeTouches[0].isInProgress) {
             rb.useGravity = false;
             vertical = Touch.activeTouches[0].delta.y * speed * Time.deltaTime;
@@ -85,14 +81,10 @@ public class PlaneControl : MonoBehaviour
                             Mathf.Clamp(transform.position.y, 3.2f, 4.5f),
                             0);
 
-
-
-
         // update velocity
         rb.velocity = new Vector3(horizontal, vertical, 0);
         // rb.rotation = originRot;
     }
-
 
     void OnTriggerEnter(Collider other)
     {
