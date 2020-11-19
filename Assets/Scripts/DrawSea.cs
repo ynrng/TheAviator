@@ -25,6 +25,7 @@ public class DrawSea : MonoBehaviour {
     {
 
     }
+
     #region drawing
     GameObject createSky()
     {
@@ -50,18 +51,23 @@ public class DrawSea : MonoBehaviour {
         // parent.transform.parent = gameObject.transform;
 
         //1) Create an empty GameObject with the required Components
-        GameObject seaGo = PrimitiveHelper.CreatePrimitive(PrimitiveType.Cylinder, false, "Sea");
+        // GameObject seaGo = PrimitiveHelper.CreatePrimitive(PrimitiveType.Cylinder, false, "Sea");
+        GameObject seaGo = new GameObject("Sea");
+        DrawCylinder cylinder = seaGo.AddComponent<DrawCylinder>();
+        cylinder.segmentsHeight = 10;
+        cylinder.segmentsRadial = 40;
         // Mesh meshCube =  PrimitiveHelper.GetPrimitiveMesh(PrimitiveType.Cube);
 
         seaGo.transform.position = Vector3.up * -600;
         seaGo.transform.Rotate(Vector3.right * -90);
-        seaGo.transform.localScale = new Vector3(1200, 400, 1200);
+        // seaGo.transform.localScale = new Vector3(1200, 400, 1200); // for unity built-in PrimitiveType.Cylinder
+        // remember to divide y by cylinder.segmentsHeight
+        seaGo.transform.localScale = new Vector3(600, 800 / cylinder.segmentsHeight, 600); // for self-built DrawCylinder
         seaGo.transform.parent = gameObject.transform;
 
         //9) Give it a Material
-        // Material material = new Material(PrimitiveHelper.GetMaterialStandard());
-        // Material seaMa = new Material(seaGo.GetComponent<MeshRenderer>().material);
-        Material seaMa = seaGo.GetComponent<MeshRenderer>().material;
+        MeshRenderer seaMr = seaGo.AddComponent<MeshRenderer>();
+        Material seaMa = seaMr.material;
         seaMa.SetColor("_Color", AviatorColors.Blue);
         // todo should Material be saved for future use;
 
