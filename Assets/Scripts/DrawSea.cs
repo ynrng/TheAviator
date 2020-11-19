@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public enum BlendMode {
     Opaque,
@@ -41,7 +42,10 @@ public class DrawSea : MonoBehaviour {
         Material skyMa = new Material(Shader.Find("Aviator/LinearGradientColor"));
         skyMa.SetColor("_color1", AviatorColors.Sky);
         skyMa.SetColor("_color2", AviatorColors.Fog);
-        skyGo.GetComponent<MeshRenderer>().material = skyMa;
+        MeshRenderer skyMr = skyGo.GetComponent<MeshRenderer>();
+        skyMr.material = skyMa;
+        skyMr.shadowCastingMode = ShadowCastingMode.Off;
+        skyMr.receiveShadows = false;
 
         return skyGo;
     }
@@ -69,11 +73,12 @@ public class DrawSea : MonoBehaviour {
         MeshRenderer seaMr = seaGo.AddComponent<MeshRenderer>();
         Material seaMa = seaMr.material;
         seaMa.SetColor("_Color", AviatorColors.Blue);
+
         // todo should Material be saved for future use;
 
         // [ref](https://docs.unity3d.com/2019.4/Documentation/Manual/StandardShaderMaterialParameterRenderingMode.html)
         #region set rendering mode to transparent
-        seaMa.SetInt("_Mode", (int)BlendMode.Transparent);
+        seaMa.SetInt("_Mode", (int)BlendMode.Transparent); // note transparent mode cannot cast shadows;
         seaMa.SetOverrideTag("RenderType", "Transparent");
         seaMa.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
         seaMa.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
@@ -83,7 +88,6 @@ public class DrawSea : MonoBehaviour {
         seaMa.EnableKeyword("_ALPHAPREMULTIPLY_ON");
         seaMa.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
         #endregion
-        // seaGo.GetComponent<MeshRenderer>().material = seaMa;
 
         seaGo.AddComponent<Sea>();
 

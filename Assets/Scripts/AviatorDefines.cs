@@ -17,6 +17,8 @@ public struct AviatorColors {
     // background: linear-gradient(#e4e0ba, #f7d9aa);
     public static Color Sky = GetColor("0xe4e0ba");
     public static Color Fog = GetColor("0xf7d9aa");
+    public static Color Light = GetColor("0xdc887480");
+
     public static Color Red = GetColor("0xf25346");
     public static Color White = GetColor("0xd8d0d1");
     public static Color Brown = GetColor("0x59332e");
