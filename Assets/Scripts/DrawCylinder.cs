@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(MeshFilter))]
 public class DrawCylinder : MonoBehaviour {
     // how many segments do we want in between;
     public int segmentsHeight = 1; //
     public int segmentsRadial = 3;
     // public bool addStandardMaterial = true;
+
+    public bool isDiscrete = true; // todo continuous
     int stepH = 1;
     int radiusRound = 1;
 
@@ -27,6 +29,42 @@ public class DrawCylinder : MonoBehaviour {
     void Update()
     {
 
+    }
+    public List<int>[] groupSamePoint()
+    {
+        List<int>[] points = new List<int>[(segmentsHeight + 1) * segmentsRadial];
+        // first is self;
+        // points[0] = target;
+        for (int j = 0; j <= segmentsHeight; j++) {
+            for (int i = 0; i < segmentsRadial; i++) {
+                int indexk = j * segmentsRadial + i;
+                bool isZero = i % segmentsRadial == 0;
+                points[indexk] = new List<int>();
+                // mind edge case
+                if (j != segmentsHeight) {
+                    // top line
+                    if (isZero) {
+                        points[indexk].Add((indexk + segmentsRadial) * 6 - 4); // t l
+                    } else {
+                        points[indexk].Add((indexk) * 6 - 4); // t l
+                    }
+                    points[indexk].Add((indexk) * 6); // t r b
+                    points[indexk].Add((indexk) * 6 + 3); // t r t
+                }
+                if (j != 0) {
+                    // bottome line
+                    if (isZero) {
+                        points[indexk].Add(indexk * 6 - 5); // b l b
+                        points[indexk].Add(indexk * 6 - 1); // b l t
+                    } else {
+                        points[indexk].Add((indexk - segmentsRadial) * 6 - 5); // b l b
+                        points[indexk].Add((indexk - segmentsRadial) * 6 - 1); // b l t
+                    }
+                    points[indexk].Add((indexk - segmentsRadial) * 6 + 4); // b r
+                }
+            }
+        }
+        return points;
     }
 
     void makeMeshData()
@@ -74,7 +112,8 @@ public class DrawCylinder : MonoBehaviour {
 
     void createMesh()
     {
-        MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
+        // to avoid add mesh multiple times; declare at top require;
+        MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
 
         // if (addStandardMaterial) {
         //     MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();

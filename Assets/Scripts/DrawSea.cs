@@ -85,6 +85,8 @@ public class DrawSea : MonoBehaviour {
         #endregion
         // seaGo.GetComponent<MeshRenderer>().material = seaMa;
 
+        seaGo.AddComponent<Sea>();
+
         return seaGo;
     }
     #endregion
