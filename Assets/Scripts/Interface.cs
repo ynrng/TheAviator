@@ -4,17 +4,13 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using System.Text;
+using System.Linq;
 
 public class Interface : MonoBehaviour
 {
-    static public int score = 0;
-    static public int distance = 0;
-    static public int energy = 30;
-    static public AviatorStates state = AviatorStates.Flying;//todo
 
-
-    private int level = 1;
-    private Text[] texts;
+    private Text texts;
     private Generator generator;
     private PlaneControl plane;
 
@@ -22,46 +18,38 @@ public class Interface : MonoBehaviour
     void Start()
     {
         // initVars();
-        texts = GetComponentsInChildren<Text>();
-        generator = GameObject.Find("Generators").GetComponent<Generator>();
+        texts = GetComponentInChildren<Text>();
+        // generator = GameObject.Find("Generators").GetComponent<Generator>();
         // plane = transform.parent.gameObject.GetComponentInChildren<PlaneControl>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        texts[0].text = String.Format("Level {0}, Score {1}/{2}", level, score, 100);
+        // texts[0].text = String.Format("Level {0}, Score {1}/{2}", level, score, 100);
         // texts[1].text = String.Format("Level {0}, Score {1}/{2}", level, score, 100);
-        texts[1].text = String.Format("Energy {0}/{1}", energy, 100);
 
-        if (state == AviatorStates.Start && InputManager.isTapping()) {
+        StringBuilder text = new StringBuilder();
+        text.Append(String.Format("Level {0}, Score {1}/{2}\n", Aviator.level, " ", 100));
+        text.Append(String.Format("Energy {0}/{1}\n", Aviator.energy, 100));
 
-            initVars();
-            generator.startCoroutines();
+        texts.text = text.ToString();
+
+        if (Aviator.status == AviatorStates.Start && InputManager.isTapping()) {
+
+            // generator.startCoroutines();
 
             // new WaitForSeconds(1);
 
-            state = AviatorStates.Rising;
+            Aviator.status = AviatorStates.Rising;
 
             // plane.rise();
         }
-        if (state == AviatorStates.Flying && energy <= 0) {
-            state = AviatorStates.Falling;
-            generator.stopCoroutines();
+        if (Aviator.status == AviatorStates.Flying && Aviator.energy <= 0) {
+            Aviator.status = AviatorStates.Falling;
+            // generator.stopCoroutines();
             // plane.fall();
         }
     }
-
-
-
-    void initVars()
-    {
-        score = 0;
-        distance = 0;
-        energy = 10;
-        // state = AviatorStates.Start;
-        level = 1;
-    }
-
 
 }

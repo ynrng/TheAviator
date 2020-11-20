@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.SceneManagement;
+﻿
 using UnityEngine;
+// using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
@@ -32,14 +30,13 @@ public class DrawScene : MonoBehaviour {
         Camera camera = gameObject.GetComponent<Camera>();
 
         // if (camera) {
-        camera.transform.position = new Vector3(0, 100, -200); // coordinate system diff
-        camera.orthographic = false;
-        camera.fieldOfView = 60;
-        // camera.aspect =
-        camera.nearClipPlane = 1;
+        camera.fieldOfView = 50;
+        camera.nearClipPlane = .1f;
         camera.farClipPlane = 1000;
+        camera.orthographic = false;
         camera.clearFlags = CameraClearFlags.SolidColor;
         camera.backgroundColor = Color.clear;
+        camera.transform.position = new Vector3(0, Aviator.planeDefaultHeight, -200); // coordinate system diff
         // }
 
         // 	// Activate the anti-aliasing; this is less performant,
@@ -52,12 +49,41 @@ public class DrawScene : MonoBehaviour {
         // // Listen to the screen: if the user resizes it
         // // we have to update the camera and the renderer size
         // window.addEventListener('resize', handleWindowResize, false);
-
     }
 
     // Update is called once per frame
+
     void Update()
     {
 
+        onResize();
+        onMouseMove();
+        onTouchMove();
+        onMouseUp();
+        onTouchEnd();
     }
+
+    //todo
+    void onResize()
+    {
+
+    }
+
+    void onMouseMove()
+    {
+
+    }
+    void onTouchMove()
+    {
+
+    }
+    void onMouseUp()
+    {
+
+    }
+    void onTouchEnd()
+    {
+
+    }
+
 }

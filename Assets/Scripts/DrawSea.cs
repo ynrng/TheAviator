@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public enum BlendMode {
-    Opaque,
-    Cutout,
-    Fade,   // Old school alpha-blending mode, fresnel does not affect amount of transparency
-    Transparent // Physically plausible transparency mode, implemented as alpha pre-multiply
-}
-
 public class DrawSea : MonoBehaviour {
     // Start is called before the first frame update
     // GameObject parent;
@@ -33,8 +26,8 @@ public class DrawSea : MonoBehaviour {
         GameObject skyGo = PrimitiveHelper.CreatePrimitive(PrimitiveType.Quad, false, "Sky");
         // Mesh meshCube =  PrimitiveHelper.GetPrimitiveMesh(PrimitiveType.Cube);
 
-        skyGo.transform.position = new Vector3(0, 200, 400);
-        skyGo.transform.localScale = new Vector3(1300, 1000, 1);
+        skyGo.transform.position = new Vector3(0, 100, 790);
+        skyGo.transform.localScale = new Vector3(1700, 1000, 1);
         skyGo.transform.parent = gameObject.transform;
 
         //9) Give it a Material
@@ -62,32 +55,18 @@ public class DrawSea : MonoBehaviour {
         cylinder.segmentsRadial = 40;
         // Mesh meshCube =  PrimitiveHelper.GetPrimitiveMesh(PrimitiveType.Cube);
 
-        seaGo.transform.position = Vector3.up * Aviator.Center;
+        seaGo.transform.position = Vector3.down * Aviator.seaRadius;
         seaGo.transform.Rotate(Vector3.right * -90);
         // seaGo.transform.localScale = new Vector3(1200, 400, 1200); // for unity built-in PrimitiveType.Cylinder
         // remember to divide y by cylinder.segmentsHeight
-        seaGo.transform.localScale = new Vector3(Aviator.Center, 800 / cylinder.segmentsHeight, Aviator.Center); // for self-built DrawCylinder
+        seaGo.transform.localScale = new Vector3(Aviator.seaRadius, Aviator.seaLength / cylinder.segmentsHeight, Aviator.seaRadius); // for self-built DrawCylinder
         seaGo.transform.parent = gameObject.transform;
 
         //9) Give it a Material
         MeshRenderer seaMr = seaGo.AddComponent<MeshRenderer>();
         Material seaMa = seaMr.material;
         seaMa.SetColor("_Color", AviatorColors.Blue);
-
-        // todo should Material be saved for future use;
-
-        // [ref](https://docs.unity3d.com/2019.4/Documentation/Manual/StandardShaderMaterialParameterRenderingMode.html)
-        #region set rendering mode to transparent
-        seaMa.SetInt("_Mode", (int)BlendMode.Transparent); // note transparent mode cannot cast shadows;
-        seaMa.SetOverrideTag("RenderType", "Transparent");
-        seaMa.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-        seaMa.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        seaMa.SetInt("_ZWrite", 0);
-        seaMa.DisableKeyword("_ALPHATEST_ON");
-        seaMa.DisableKeyword("_ALPHABLEND_ON");
-        seaMa.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-        seaMa.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-        #endregion
+        PrimitiveHelper.SetMaterialTransparent(seaMa);
 
         seaGo.AddComponent<Sea>();
 

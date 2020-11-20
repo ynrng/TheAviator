@@ -23,26 +23,61 @@ public class DrawAirPlane : MonoBehaviour {
         parent.transform.parent = gameObject.transform;
         // todo remember to add rigidbody to parent
 
-        createCockpit();
+        createCabin();
         // createCubeWithName("Cabin", new Vector3(60, 50, 50), Vector3.zero, AviatorColors.Red);
-        createCubeWithName("Engine", new Vector3(20, 50, 50), Vector3.right * 40, AviatorColors.White);
-        createCubeWithName("Tail", new Vector3(15, 20, 5), new Vector3(-35, 25, 0), AviatorColors.Red);
-        createCubeWithName("SideWing", new Vector3(40, 8, 150), Vector3.zero, AviatorColors.Red);
-        GameObject propeller = createCubeWithName("Propeller", new Vector3(20, 10, 10), Vector3.zero, AviatorColors.Brown);
-        GameObject blade = createCubeWithName("Blades", new Vector3(1, 100, 20), new Vector3(8, 0, 0), AviatorColors.BrownDark);
-        //    GameObject blade2 = Instantiate(blade1, )
-        blade.transform.parent = propeller.transform;
-        propeller.transform.position = new Vector3(50, 0, 0);
+        createCubeWithName("Engine", new Vector3(20, 50, 50), Vector3.right * 50, AviatorColors.White);
+        createCubeWithName("Tail", new Vector3(15, 20, 5), new Vector3(-40, 20, 0), AviatorColors.Red);
+        createCubeWithName("SideWing", new Vector3(30, 5, 120), Vector3.up * 15, AviatorColors.Red);
+        createCubeWithName("Windshield", new Vector3(3, 15, 20), new Vector3(5, 27, 0), AviatorColors.WhiteTransparent);
+
+        GameObject propeller = createPropeller();
+        // GameObject propeller = createCubeWithName("Propeller", new Vector3(20, 10, 10), Vector3.zero, AviatorColors.Brown);
+        GameObject blade1 = createCubeWithName("Blades", new Vector3(1, 80, 10), new Vector3(8, 0, 0), AviatorColors.BrownDark, propeller);
+        GameObject blade2 = Instantiate(blade1, blade1.transform.parent, false);
+        blade2.transform.localRotation = Quaternion.Euler(90, 0, 0);
+        propeller.transform.position = new Vector3(60, 0, 0);
         propeller.AddComponent<PlaneSpin>();
+
+        GameObject wheelProtectR = createCubeWithName("WheelProtect", new Vector3(30, 15, 10), Vector3.zero, AviatorColors.Red);
+        GameObject wheelTireR = createCubeWithName("wheelTire", new Vector3(24, 24, 4), Vector3.up * -8, AviatorColors.BrownDark, wheelProtectR);
+        GameObject wheelAxisR = createCubeWithName("wheelAxis", new Vector3(10, 10, 6), Vector3.up * -8, AviatorColors.Brown, wheelProtectR);
+        wheelProtectR.transform.position = new Vector3(25, -20, -25);
+
+        GameObject wheelProtectL = Instantiate(wheelProtectR, wheelProtectR.transform.parent, false);
+        wheelProtectL.transform.RotateAround(Vector3.right * wheelProtectL.transform.position.x, Vector3.up, 180);
+
+        GameObject wheelTireB = Instantiate(wheelTireR, parent.transform, true);
+        wheelTireB.transform.localScale = wheelTireB.transform.localScale * .5f;
+        wheelTireB.transform.position = new Vector3(-35, -5, 0);
+
+        GameObject suspension = createCubeWithName("Suspension", new Vector3(4, 20, 4), new Vector3(-30, 3, 0), AviatorColors.Red);
+        suspension.transform.rotation = Quaternion.Euler(0, 0, -0.3f / Mathf.PI * 180);
 
         //DrawPilot
         createPilot();
 
         //after all parts drawn;
-        parent.transform.position = Vector3.up * 100;
+        parent.transform.position = Vector3.up * Aviator.planeDefaultHeight;
         parent.transform.localScale = Vector3.one * .25f;
 
         return parent;
+    }
+
+    public GameObject createPropeller()
+    {
+        GameObject propeller = PrimitiveHelper.CreatePrimitive(PrimitiveType.Cube, false, "Propeller");
+        Mesh meshCube = propeller.GetComponent<MeshFilter>().mesh;
+        messWithCube(meshCube, new Vector4(-.5f, .5f, -.5f, .5f));
+
+        // Material: assign color
+        Material engineMa = propeller.GetComponent<MeshRenderer>().material;
+        engineMa.SetColor("_Color", AviatorColors.Brown);
+
+        propeller.transform.localScale = new Vector3(20, 10, 10);
+        // engineGo.transform.position = position;
+        propeller.transform.parent = parent.transform;
+
+        return propeller;
     }
     public GameObject createPilot()
     {
@@ -71,10 +106,10 @@ public class DrawAirPlane : MonoBehaviour {
         int startPosZ = -4;
         int startPosX = -4;
         for (int i = 0; i < 12; i++) {
-            GameObject hairMvGo = createCubeWithName("Move", Vector3.one * 4,
+            GameObject hairMvGo = createCubeWithName("Hair", Vector3.one * 4,
             new Vector3(startPosX + (i / 3) * 4, 0, startPosZ + (i % 3) * 4), AviatorColors.Brown, topGo);
-            hairMvGo.AddComponent<PilotHair>();
-            hairMvGo.GetComponent<PilotHair>().index = i;
+            PilotHair pilotHair = hairMvGo.AddComponent<PilotHair>();
+            pilotHair.index = i;
         }
 
         topGo.transform.parent = hairsGo.transform;
@@ -90,12 +125,8 @@ public class DrawAirPlane : MonoBehaviour {
 
     }
 
-    GameObject createCockpit()
+    Mesh messWithCube(Mesh meshCube, Vector4 distance)
     {
-
-        GameObject engineGo = PrimitiveHelper.CreatePrimitive(PrimitiveType.Cube, false, "Cockpit");
-        Mesh meshCube = engineGo.GetComponent<MeshFilter>().mesh;
-
         Vector3[] verticesTarget = meshCube.vertices;
         // different from 3.js, vertices remains the same with original coordinates, meaning cube x-axis is -0.5-0.5, so on;
         // it does not matter if transform or scale is applied; so in some way it is easy to calculate;
@@ -104,18 +135,18 @@ public class DrawAirPlane : MonoBehaviour {
             //just calculate the cordinates and perform act
             if (verticesTarget[i].x < 0) {
                 if (verticesTarget[i].y > 0) {
-                    verticesTarget[i].y -= .2f;
+                    verticesTarget[i].y += distance[0];
                     if (verticesTarget[i].z > 0) {
-                        verticesTarget[i].z -= .4f;
+                        verticesTarget[i].z += distance[2];
                     } else {
-                        verticesTarget[i].z += .4f;
+                        verticesTarget[i].z += distance[3];
                     }
                 } else {
-                    verticesTarget[i].y += .6f;
+                    verticesTarget[i].y += distance[1];
                     if (verticesTarget[i].z > 0) {
-                        verticesTarget[i].z -= .4f;
+                        verticesTarget[i].z += distance[2];
                     } else {
-                        verticesTarget[i].z += .4f;
+                        verticesTarget[i].z += distance[3];
                     }
                 }
             }
@@ -124,6 +155,16 @@ public class DrawAirPlane : MonoBehaviour {
         meshCube.vertices = verticesTarget;
         // call to rerender
         meshCube.RecalculateNormals();
+
+        return meshCube;
+    }
+
+    GameObject createCabin()
+    {
+
+        GameObject engineGo = PrimitiveHelper.CreatePrimitive(PrimitiveType.Cube, false, "Cabin");
+        Mesh meshCube = engineGo.GetComponent<MeshFilter>().mesh;
+        messWithCube(meshCube, new Vector4(-.2f, .6f, -.4f, .4f));
 
         // Material: assign color
         Material engineMa = engineGo.GetComponent<MeshRenderer>().material;
@@ -141,6 +182,10 @@ public class DrawAirPlane : MonoBehaviour {
         return createCubeWithName(name, localScale, position, color, parent);
     }
 
+    // Material seaMa = seaMr.material;
+    // seaMa.SetColor("_Color", AviatorColors.Blue);
+    // PrimitiveHelper.SetMaterialTransparent(seaMa);
+
     GameObject createCubeWithName(string name, Vector3 localScale, Vector3 position, Color color, GameObject p)
     {
 
@@ -152,6 +197,9 @@ public class DrawAirPlane : MonoBehaviour {
         Material engineMa = engineGo.GetComponent<MeshRenderer>().material;
         // todo should Material be saved for future use;
         // but definately create a instance for same color on the same render; like in primitivehelper;
+        if (color.a < 1) {
+            PrimitiveHelper.SetMaterialTransparent(engineMa);
+        }
         engineMa.SetColor("_Color", color);
 
         engineGo.transform.localScale = localScale;

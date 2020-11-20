@@ -92,7 +92,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.0057735024
+  m_Radius: 0.64
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-1856161662067973141
 MonoBehaviour:
@@ -106,5 +106,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e69feedc7ad4a1d92ea77c1de1a641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spinSpeed: 100
-  spinAroundSpeed: 100
+  spinSpeed: 30

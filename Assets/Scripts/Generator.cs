@@ -1,24 +1,15 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.IO.Compression;
-using UnityEditor;
 using UnityEngine;
 
 public class Generator : MonoBehaviour {
-    // Start is called before the first frame update
 
     public GameObject[] prefebsNone = new GameObject[1];
     public GameObject[] prefebsCoin = new GameObject[1];
     public GameObject[] prefebsStone = new GameObject[1];
 
-    private float currentX;
-    private GameObject parent;
-
     private IEnumerator[] ienums = new IEnumerator[3];
 
-    // private bool isGenerating = false;
-
+    // Start is called before the first frame update
     void Start()
     {
 
@@ -50,9 +41,9 @@ public class Generator : MonoBehaviour {
 
             // GameObject parent = new GameObject("Cloud");
             // var stepAngle = Math.PI * 2 / 20;
-            float x = Mathf.Abs(Aviator.Center) + 150 + Random.Range(0f, 100f); // 100-250
-            float z = 200 + Random.Range(0f, 200);//200-400
-            float y = Aviator.Center;
+            float x = Aviator.seaRadius + 150 + Random.Range(0f, 200f); // 100-250
+            float z = 100 + Random.Range(0f, Aviator.seaLength);//200-400
+            float y = -Aviator.seaRadius;
             float scale = (1 + Random.Range(0, 1f)) * 20;
             for (int i = 0; i < 3 + Random.Range(0, 3); i++) {
 
@@ -74,55 +65,42 @@ public class Generator : MonoBehaviour {
 
     IEnumerator generateCoins()
     {
-        // Y:2.5-3.5
-        // x: -3.5 screen left
-        new WaitForSeconds(Random.Range(0, 3));
         while (true) {
+            float x = randomX();
+            float amplitude = 10 + Random.Range(0f, 5);
 
-            float x = Random.Range(3.4f, 4.5f);
-            // if (Mathf.Abs(currentX - x) < 0.2) {
-            //     currentX = 0;
-            //     yield return new WaitForSeconds(1);
-            // }
-            // currentX = x;
-            for (int i = 0; i < Random.Range(2, 8); i++) {
-
+            for (float i = 0; i < 5 + Random.Range(0, 5); i++) {
                 GameObject iCube =
                 Instantiate(prefebsCoin[Random.Range(0, prefebsCoin.Length)],
-                    new Vector3(x, i * 0.2f, 0),
-                    Random.rotation
-                    );
+                            new Vector3(x + Mathf.Sin(i) * 2.5f,
+                            -Aviator.seaRadius + i * amplitude, 0),
+                            Random.rotation
+                            );
+                iCube.transform.localScale = Vector3.one * 5f;
                 iCube.transform.parent = gameObject.transform;
             }
             yield return new WaitForSeconds(Random.Range(3, 5));
         }
     }
 
+    float randomX() => Aviator.seaRadius + Aviator.planeDefaultHeight + Random.Range(-1f, 1f) * (Aviator.planeAmpHeight - 20);
+
     IEnumerator generateStones()
     {
-        // Y:2.5-3.5
-        // x: -3.5 screen left
         new WaitForSeconds(Random.Range(0, 3));
         while (true) {
+            float x = randomX(); // 100-250
+            float amplitude = 10 + Random.Range(0f, 5);
 
-            float x = Random.Range(3.4f, 4.5f);
-            if (Mathf.Abs(currentX - x) < 0.2) {
-                currentX = 0;
-                yield return new WaitForSeconds(1);
+            for (int i = 0; i < Aviator.level; i++) {
+                GameObject iCube =
+                Instantiate(prefebsStone[Random.Range(0, prefebsStone.Length)],
+                            new Vector3(x + Mathf.Sin(i) * amplitude, -Aviator.seaRadius + i * amplitude, 0),
+                            Random.rotation
+                            );
+                iCube.transform.localScale = Vector3.one * 8;
+                iCube.transform.parent = gameObject.transform;
             }
-            currentX = x;
-
-            // GameObject parentCube = new GameObject("parentCube");
-            // for (int i = 0; i < Random.Range(nums[0], nums[1]); i++)
-            // {
-
-            GameObject iCube =
-            Instantiate(prefebsStone[Random.Range(0, prefebsStone.Length)],
-                        new Vector3(x, 0, 0),
-                        Random.rotation
-                        );
-            iCube.transform.parent = gameObject.transform;
-            // }
             yield return new WaitForSeconds(Random.Range(4, 6));
         }
     }

@@ -36,7 +36,7 @@ public class PlaneControl : MonoBehaviour
     void Update()
     {
 
-        switch (Interface.state) {
+        switch (Aviator.status) {
             case AviatorStates.Rising:
                 rise();
                 break;
@@ -89,7 +89,7 @@ public class PlaneControl : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "stone") {
-            Interface.energy -= 10;
+            Aviator.energy -= 10;
             rb.freezeRotation = true;
             // rb.AddForce(-forcePumpL, -forcePumpD, 0, ForceMode.Impulse);
             rb.AddExplosionForce(forcePumpL, other.transform.position, 1, -1, ForceMode.Impulse);
@@ -98,7 +98,7 @@ public class PlaneControl : MonoBehaviour
         }
 
         if (other.gameObject.tag == "coin") {
-            Interface.score += 10;
+            // Interface.score += 10;
             Destroy(other.gameObject);
         }
 
@@ -110,7 +110,7 @@ public class PlaneControl : MonoBehaviour
         if (transform.position.y > flyingPos.y) {
             rb.velocity = Vector3.zero;
             transform.position = flyingPos;
-            Interface.state = AviatorStates.Flying;
+            Aviator.status = AviatorStates.Flying;
         } else {
             rb.velocity = new Vector3(0, rb.velocity.y, 0);
             rb.AddForce(Vector3.up * 6);
@@ -125,7 +125,7 @@ public class PlaneControl : MonoBehaviour
 
             rb.velocity = Vector3.zero;
             transform.position = originPos;
-            Interface.state = AviatorStates.Start;
+            Aviator.status = AviatorStates.Start;
 
             // transform.position = new Vector3(originPos.x, );
 
