@@ -46,8 +46,10 @@ public struct AviatorColors {
 }
 
 public struct Aviator {
+    //mouse control or touch control
+    public static Vector2 mousePos = Vector2.zero;
+
     public static float SpinningSpeed = 20f;
-    // mousePos = { x: 0, y: 0 }
 
     //below is original project vars
     #region initial game data

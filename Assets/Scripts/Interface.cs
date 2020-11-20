@@ -35,21 +35,21 @@ public class Interface : MonoBehaviour
 
         texts.text = text.ToString();
 
-        if (Aviator.status == AviatorStates.Start && InputManager.isTapping()) {
+        // if (Aviator.status == AviatorStates.Start) {
 
-            // generator.startCoroutines();
+        //     // generator.startCoroutines();
 
-            // new WaitForSeconds(1);
+        //     // new WaitForSeconds(1);
 
-            Aviator.status = AviatorStates.Rising;
+        //     Aviator.status = AviatorStates.Rising;
 
-            // plane.rise();
-        }
-        if (Aviator.status == AviatorStates.Flying && Aviator.energy <= 0) {
-            Aviator.status = AviatorStates.Falling;
-            // generator.stopCoroutines();
-            // plane.fall();
-        }
+        //     // plane.rise();
+        // }
+        // if (Aviator.status == AviatorStates.Flying && Aviator.energy <= 0) {
+        //     Aviator.status = AviatorStates.Falling;
+        //     // generator.stopCoroutines();
+        //     // plane.fall();
+        // }
     }
 
 }
