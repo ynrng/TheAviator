@@ -13,15 +13,12 @@ public class PlaneSpin : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (Aviator.status) {
-            case AviatorStates.Flying:
+        if (Aviator.status == AviatorStates.Flying) {
                 transform.Rotate(transform.position.z + speed * Time.deltaTime, 0, 0);
-                break;
-            // case AviatorStates.End:
-            // todo
-            // break;
-            default:
-                break;
+
+        } else {
+            // transform.Rotate(transform.position.z + speed * Time.deltaTime, 0, 0);
+            // gameObject
         }
     }
 }

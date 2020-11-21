@@ -2,8 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.EnhancedTouch;
-using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using System.Text;
 using System.Linq;
 
@@ -11,28 +9,28 @@ public class Interface : MonoBehaviour
 {
 
     private Text texts;
-    private Generator generator;
-    private PlaneControl plane;
-
-    // Start is called before the first frame update
+    StringBuilder text = new StringBuilder();
+    bool needUpdate = false;
     void Start()
     {
-        // initVars();
         texts = GetComponentInChildren<Text>();
-        // generator = GameObject.Find("Generators").GetComponent<Generator>();
-        // plane = transform.parent.gameObject.GetComponentInChildren<PlaneControl>();
+        buildString();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // texts[0].text = String.Format("Level {0}, Score {1}/{2}", level, score, 100);
-        // texts[1].text = String.Format("Level {0}, Score {1}/{2}", level, score, 100);
-
-        StringBuilder text = new StringBuilder();
-        text.Append(String.Format("Level {0}, Score {1}/{2}\n", Aviator.level, " ", 100));
-        text.Append(String.Format("Energy {0}/{1}\n", Aviator.energy, 100));
-
+        switch (Aviator.status) {
+            case AviatorStates.Start:
+                if (needUpdate) {
+                    text.Append("CLICK TO REPLAY");
+                    needUpdate = false;
+                }
+                break;
+            case AviatorStates.Flying:
+                buildString();
+                break;
+        }
         texts.text = text.ToString();
 
         // if (Aviator.status == AviatorStates.Start) {
@@ -50,6 +48,15 @@ public class Interface : MonoBehaviour
         //     // generator.stopCoroutines();
         //     // plane.fall();
         // }
+    }
+
+    void buildString()
+    {
+        text.Clear();
+        text.Append(String.Format("Level {0}\n", Aviator.level));
+        text.Append(String.Format("Distance {0}\n", Aviator.distance));
+        text.Append(String.Format("Energy {0}\n", Aviator.energy));
+        needUpdate = true;
     }
 
 }

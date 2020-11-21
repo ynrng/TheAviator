@@ -47,9 +47,9 @@ public struct AviatorColors {
 
 public struct Aviator {
     //mouse control or touch control
-    public static Vector2 mousePos = Vector2.zero;
+    public static Vector2 mousePos;
 
-    public static float SpinningSpeed = 20f;
+    public static float SpinningSpeed;
 
     //below is original project vars
     #region initial game data
@@ -62,21 +62,21 @@ public struct Aviator {
     public static float distanceForSpeedUpdate = 100f;
     public static float speedLastUpdate = 0f;
 
-    public static float distance = 0;
+    public static int distance;
     public static float ratioSpeedDistance = 50;
-    public static float energy = 100;
+    public static int energy;
     public static float ratioSpeedEnergy = 3;
 
-    public static int level = 1;
+    public static int level;
     public static int levelLastUpdate = 0;
     public static int distanceForLevelUpdate = 1000;
 
     public static float planeDefaultHeight = 100;
     public static float planeAmpHeight = 80;
     public static float planeAmpWidth = 75;
-    public static float planeMoveSensivity = 0.005f;
+    public static float planeMoveSensivity;
     public static float planeRotXSensivity = 0.0008f;
-    public static float planeRotZSensivity = 0.0004f;
+    public static float planeRotZSensivity;
     public static float planeFallSpeed = .001f;
     public static float planeMinSpeed = 1.2f;
     public static float planeMaxSpeed = 1.6f;
@@ -87,8 +87,8 @@ public struct Aviator {
     public static float planeCollisionDisplacementY = 0;
     public static float planeCollisionSpeedY = 0;
 
-    public static int seaRadius = 600;
-    public static int seaLength = 800;
+    public static int seaRadius;
+    public static int seaLength;
     public static float seaRotationSpeed = 0.006f;
     public static float wavesMinAmp = 5f;
     public static float wavesMaxAmp = 20f;
@@ -111,11 +111,13 @@ public struct Aviator {
     public static float ennemyLastSpawn = 0;
     public static float distanceForEnnemiesSpawn = 50;
 
-    public static AviatorStates status = AviatorStates.Flying;
+    public static AviatorStates status;
     #endregion
 
     public static void reset()
     {
+        mousePos = Vector2.zero;
+        SpinningSpeed = 20f;
 
         speed = 0f;
         initSpeed = .00035f;
@@ -138,9 +140,9 @@ public struct Aviator {
         planeDefaultHeight = 100;
         planeAmpHeight = 80;
         planeAmpWidth = 75;
-        planeMoveSensivity = 0.005f;
+        planeMoveSensivity = 1f;
         planeRotXSensivity = 0.0008f;
-        planeRotZSensivity = 0.0004f;
+        planeRotZSensivity = 0.5f;
         planeFallSpeed = .001f;
         planeMinSpeed = 1.2f;
         planeMaxSpeed = 1.6f;
@@ -175,7 +177,7 @@ public struct Aviator {
         ennemyLastSpawn = 0;
         distanceForEnnemiesSpawn = 50;
 
-        status = AviatorStates.Flying;
+        status = AviatorStates.Start;
     }
 
 }

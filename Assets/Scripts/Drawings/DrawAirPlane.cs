@@ -21,7 +21,6 @@ public class DrawAirPlane : MonoBehaviour {
     public GameObject createAirplane(){
         parent = new GameObject("AirPlane");
         parent.transform.parent = gameObject.transform;
-        // todo remember to add rigidbody to parent
 
         createCabin();
         // createCubeWithName("Cabin", new Vector3(60, 50, 50), Vector3.zero, AviatorColors.Red);
@@ -57,8 +56,10 @@ public class DrawAirPlane : MonoBehaviour {
         createPilot();
 
         //after all parts drawn;
-        parent.transform.position = Vector3.up * Aviator.planeDefaultHeight;
+        parent.transform.position = Vector3.up * -Aviator.seaRadius;
         parent.transform.localScale = Vector3.one * .25f;
+
+        parent.AddComponent<PlaneControl>();
 
         return parent;
     }

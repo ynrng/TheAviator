@@ -20,7 +20,7 @@ public class DrawScene : MonoBehaviour {
             RenderSettings.fogMode = FogMode.Linear;
             RenderSettings.fogColor = AviatorColors.Fog;
             RenderSettings.fogStartDistance = 100;
-            RenderSettings.fogEndDistance = 1000;
+            RenderSettings.fogEndDistance = 950;
             RenderSettings.fog = useFog;  // for debug;
         }
         RenderSettings.ambientLight = AviatorColors.Light;

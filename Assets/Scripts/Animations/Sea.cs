@@ -21,7 +21,7 @@ struct Wave {
     }
 }
 
-[RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshFilter), typeof(DrawCylinder))]
 public class Sea : MonoBehaviour {
     Mesh mesh;
     Vector3[] verticesOrigin;
