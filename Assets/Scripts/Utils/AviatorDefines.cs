@@ -53,7 +53,7 @@ public struct Aviator {
 
     //below is original project vars
     #region initial game data
-    public static float speed = 0f;
+    public static int speed = 0;
     public static float initSpeed = .00035f;
     public static float baseSpeed = .00035f;
     public static float targetBaseSpeed = .00035f;
@@ -65,7 +65,7 @@ public struct Aviator {
     public static int distance;
     public static float ratioSpeedDistance = 50;
     public static int energy;
-    public static float ratioSpeedEnergy = 3;
+    public static int ratioSpeedEnergy = 3;
 
     public static int level;
     public static int levelLastUpdate = 0;
@@ -119,7 +119,7 @@ public struct Aviator {
         mousePos = Vector2.zero;
         SpinningSpeed = 20f;
 
-        speed = 0f;
+        speed = 0;
         initSpeed = .00035f;
         baseSpeed = .00035f;
         targetBaseSpeed = .00035f;
@@ -140,7 +140,7 @@ public struct Aviator {
         planeDefaultHeight = 100;
         planeAmpHeight = 80;
         planeAmpWidth = 75;
-        planeMoveSensivity = 1f;
+        planeMoveSensivity = 2f;
         planeRotXSensivity = 0.0008f;
         planeRotZSensivity = 0.5f;
         planeFallSpeed = .001f;

@@ -56,7 +56,7 @@ public class DrawAirPlane : MonoBehaviour {
         createPilot();
 
         //after all parts drawn;
-        parent.transform.position = Vector3.up * -Aviator.seaRadius;
+        // parent.transform.position = Vector3.up * -Aviator.seaRadius;
         parent.transform.localScale = Vector3.one * .25f;
 
         parent.AddComponent<PlaneControl>();

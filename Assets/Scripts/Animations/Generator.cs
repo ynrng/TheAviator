@@ -9,6 +9,8 @@ public class Generator : MonoBehaviour {
 
     private IEnumerator[] ienums = new IEnumerator[3];
 
+    bool isCoroutineRunning = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,11 +29,17 @@ public class Generator : MonoBehaviour {
         ienums[2] = generateStones();
 
         StartCoroutine(ienums[0]);
+    }
 
-        // foreach (IEnumerator item in ienums) {
-        //     StartCoroutine(item);
-        //     // isGenerating = true;
-        // }
+    void Update()
+    {
+        if (Aviator.status == AviatorStates.Flying) {
+            if (!isCoroutineRunning) {
+                startCoroutines();
+            }
+        } else if (isCoroutineRunning) {
+            stopCoroutines();
+        }
     }
 
     IEnumerator generateCubes()
@@ -111,6 +119,8 @@ public class Generator : MonoBehaviour {
         for (int i = 1; i < ienums.Length; i++) {
             StopCoroutine(ienums[i]);
         }
+
+        isCoroutineRunning = false;
     }
 
     public void startCoroutines()
@@ -118,6 +128,8 @@ public class Generator : MonoBehaviour {
         for (int i = 1; i < ienums.Length; i++) {
             StartCoroutine(ienums[i]);
         }
+
+        isCoroutineRunning = true;
     }
     #endregion
 

@@ -28,12 +28,9 @@ public class InputManager : MonoBehaviour, SimpleControls.IGameplayActions {
     public void OnMove(InputAction.CallbackContext context)
     {
         Vector2 original = context.ReadValue<Vector2>();
-
-        //   var tx = -1 + (event.clientX / WIDTH)*2;
-        //     var ty = 1 - (event.clientY / HEIGHT)*2;
-
         Aviator.mousePos = new Vector2(2f * original.x / Screen.width - 1, 2f * original.y / Screen.height - 1);
-        print(Aviator.mousePos);
+        print("OnMove" + Aviator.mousePos);
+        // print(Aviator.mousePos);
     }
 
     public void OnFire(InputAction.CallbackContext context)

@@ -57,6 +57,12 @@ public class Interface : MonoBehaviour
         text.Append(String.Format("Distance {0}\n", Aviator.distance));
         text.Append(String.Format("Energy {0}\n", Aviator.energy));
         needUpdate = true;
+
+        Aviator.energy -= (int)(Aviator.speed * Time.deltaTime * Aviator.ratioSpeedEnergy);
+        Aviator.energy = Mathf.Max(Aviator.energy, 0);
+        if (Aviator.energy < 1) {
+            Aviator.status = AviatorStates.Falling;
+        }
     }
 
 }

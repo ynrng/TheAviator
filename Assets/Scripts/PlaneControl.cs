@@ -2,30 +2,30 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[RequireComponent(typeof(Rigidbody))]// required component on the gameObject
-
-// Use a separate gameplayInput component for setting up input.
+[RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]// required component on the gameObject
 public class PlaneControl : MonoBehaviour {
 
     public int tmp = 4;
     public float speed = .2f;
-    // public GameObject projectile;
+    // public gameObject projectile;
 
     // private bool m_Charging;
 
-    public int forcePumpL = 4;
+    public int forcePumpL = 10;
     private Rigidbody rb;
-
-    private float horizontal = 0f;
-    private float vertical = 0f;
-
-    private Vector3 originPos = new Vector3(-0.6f, 2.2f, 0);
-    private Vector3 flyingPos = new Vector3(-0.6f, 3.6f, 0);
+    private BoxCollider bc;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezePositionZ;
+        rb.drag = .5f;
+
+        bc = GetComponent<BoxCollider>();
+        bc.center = new Vector3(10, 0, 0);
+        bc.size = new Vector3(120, 70, 80);
+
         updateRise();
     }
 
@@ -50,19 +50,25 @@ public class PlaneControl : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         // todo uncomment
-        // if (other.gameObject.tag == "stone") {
-        //     Aviator.energy -= 10;
-        //     rb.freezeRotation = true;
-        //     // rb.AddForce(-forcePumpL, -forcePumpD, 0, ForceMode.Impulse);
-        //     rb.AddExplosionForce(forcePumpL, other.transform.position, 1, -1, ForceMode.Impulse);
-        //     rb.freezeRotation = false;
-        //     Destroy(other.gameObject);
-        // }
+        if (other.gameObject.tag == "stone") {
 
-        // if (other.gameObject.tag == "coin") {
-        //     // Interface.score += 10;
-        //     Destroy(other.gameObject);
-        // }
+            Aviator.energy -= Aviator.ennemyValue;
+            Aviator.energy = Mathf.Max(0, Aviator.energy);
+            if (Aviator.energy > 0) {
+                rb.AddExplosionForce(forcePumpL, other.transform.position, 1, -1, ForceMode.Impulse);
+            }
+
+            Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.tag == "coin") {
+            //todo add paticles
+
+            Aviator.energy += Aviator.coinValue;
+            Aviator.energy = Mathf.Min(Aviator.energy, 100);
+
+            Destroy(other.gameObject);
+        }
 
     }
 
@@ -81,11 +87,8 @@ public class PlaneControl : MonoBehaviour {
         float targetY = normalize(Aviator.mousePos.y, -.75f, .75f, Aviator.planeDefaultHeight - Aviator.planeAmpHeight, Aviator.planeDefaultHeight + Aviator.planeAmpHeight);
         float targetX = normalize(Aviator.mousePos.x, -1f, 1f, -Aviator.planeAmpWidth * .7f, -Aviator.planeAmpWidth);
 
-        // game.planeCollisionDisplacementX += game.planeCollisionSpeedX;
-        // targetX += game.planeCollisionDisplacementX;
-
-        // game.planeCollisionDisplacementY += game.planeCollisionSpeedY;
-        // targetY += game.planeCollisionDisplacementY;
+        float horizontal = targetX - transform.position.x;
+        float vertical = targetY - transform.position.y;
 
         transform.position = Vector3.Lerp(
             transform.position,
@@ -98,9 +101,6 @@ public class PlaneControl : MonoBehaviour {
             transform.position
         );
 
-        // // update velocity
-        // rb.velocity = new Vector3(horizontal, vertical, 0) * speed;
-        // transform.Rotate((Vector3)(Vector2.Lerp(transform.position, new Vector2(horizontal, vertical), 10f)));
     }
 
     #region public methods
