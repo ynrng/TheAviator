@@ -49,7 +49,7 @@ public struct Aviator {
     //mouse control or touch control
     public static Vector2 mousePos;
 
-    public static float SpinningSpeed;
+    public static int SpinningSpeed;
 
     //below is original project vars
     #region initial game data
@@ -117,7 +117,7 @@ public struct Aviator {
     public static void reset()
     {
         mousePos = Vector2.zero;
-        SpinningSpeed = 20f;
+        SpinningSpeed = 20;
 
         speed = 0;
         initSpeed = .00035f;

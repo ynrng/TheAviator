@@ -12,9 +12,6 @@ public class DrawScene : MonoBehaviour {
         // SceneView.sceneViews.
         // Scene scene = SceneManager.GetActiveScene();
 
-        // bg
-        // GameObject goSky = GameObject.FindGameObjectWithTag("sky");
-
         //fog
         if (useFog) {
             RenderSettings.fogMode = FogMode.Linear;

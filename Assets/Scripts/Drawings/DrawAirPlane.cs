@@ -60,6 +60,7 @@ public class DrawAirPlane : MonoBehaviour {
         parent.transform.localScale = Vector3.one * .25f;
 
         parent.AddComponent<PlaneControl>();
+        parent.tag = "airplane";
 
         return parent;
     }

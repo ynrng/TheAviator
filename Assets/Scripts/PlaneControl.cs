@@ -47,31 +47,6 @@ public class PlaneControl : MonoBehaviour {
 
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        // todo uncomment
-        if (other.gameObject.tag == "stone") {
-
-            Aviator.energy -= Aviator.ennemyValue;
-            Aviator.energy = Mathf.Max(0, Aviator.energy);
-            if (Aviator.energy > 0) {
-                rb.AddExplosionForce(forcePumpL, other.transform.position, 1, -1, ForceMode.Impulse);
-            }
-
-            Destroy(other.gameObject);
-        }
-
-        if (other.gameObject.tag == "coin") {
-            //todo add paticles
-
-            Aviator.energy += Aviator.coinValue;
-            Aviator.energy = Mathf.Min(Aviator.energy, 100);
-
-            Destroy(other.gameObject);
-        }
-
-    }
-
     float normalize(float v, float vmin, float vmax, float tmin, float tmax)
     {
         var nv = Mathf.Clamp(v, vmin, vmax);

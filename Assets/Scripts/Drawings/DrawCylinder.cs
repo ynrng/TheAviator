@@ -34,7 +34,7 @@ public class DrawCylinder : MonoBehaviour {
     {
         List<int>[] points = new List<int>[(segmentsHeight + 1) * segmentsRadial];
         // first is self;
-        // points[0] = target;
+        // points[0] = airplane;
         for (int j = 0; j <= segmentsHeight; j++) {
             for (int i = 0; i < segmentsRadial; i++) {
                 int indexk = j * segmentsRadial + i;

@@ -5,11 +5,12 @@ using UnityEngine.SocialPlatforms;
 
 public class Spinning : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public int spinSpeed = 30;
+    int spinAroundSpeed;
+    int forcePumpL = 10;
+
     void Start()
     {
-
+        spinAroundSpeed = Aviator.SpinningSpeed;
     }
 
     // Update is called once per frame
@@ -18,11 +19,43 @@ public class Spinning : MonoBehaviour
         if (transform.position.y < -Aviator.seaRadius && transform.position.x < 0) {
             Destroy(gameObject);
         } else {
-            if (spinSpeed > 0) {
-                transform.Rotate(Vector3.one * spinSpeed * Random.value * Time.deltaTime);
-            }
-            // transform.RotateAround(Vector3.zero, Vector3.forward, spinAroundSpeed * Time.deltaTime);
-            transform.RotateAround(Vector3.down * Aviator.seaRadius, Vector3.forward, Aviator.SpinningSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.one * Aviator.SpinningSpeed * Random.value * Time.deltaTime);
+            transform.RotateAround(Vector3.down * Aviator.seaRadius, Vector3.forward, spinAroundSpeed * Time.deltaTime);
         }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+
+        if (other.tag == "airplane") {
+
+            spinAroundSpeed = 0;
+
+            ParticleSystem particleSystem = gameObject.GetComponent<ParticleSystem>();
+            MeshRenderer mesh = gameObject.GetComponent<MeshRenderer>();
+            mesh.enabled = false;
+
+            particleSystem.Play();
+
+            Destroy(gameObject, particleSystem.main.duration + particleSystem.main.startLifetime.constantMax);
+
+            if (gameObject.tag == "stone") {
+
+                Aviator.energy -= Aviator.ennemyValue;
+                Aviator.energy = Mathf.Max(0, Aviator.energy);
+                if (Aviator.energy > 0) {
+                    other.attachedRigidbody.AddExplosionForce(forcePumpL, transform.position, 1, -1, ForceMode.Impulse);
+                }
+            }
+
+            if (gameObject.tag == "coin") {
+
+                Aviator.energy += Aviator.coinValue;
+                Aviator.energy = Mathf.Min(Aviator.energy, 100);
+
+            }
+
+        }
+
     }
 }
