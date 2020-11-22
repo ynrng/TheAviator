@@ -5,28 +5,29 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]// required component on the gameObject
 public class PlaneControl : MonoBehaviour {
 
-    public int tmp = 4;
-    public float speed = .2f;
-    // public gameObject projectile;
-
-    // private bool m_Charging;
-
-    public int forcePumpL = 10;
+    public int tmp = 4;//todo delete
     private Rigidbody rb;
     private BoxCollider bc;
+    new Camera camera;
 
     // Start is called before the first frame update
     void Start()
     {
+
+        transform.localScale = Vector3.one * .25f;
+
         rb = GetComponent<Rigidbody>();
-        rb.constraints = RigidbodyConstraints.FreezePositionZ;
-        rb.drag = .5f;
+        rb.drag = .5f; // so it will stop after hit a stone;
+        rb.useGravity = false;
 
         bc = GetComponent<BoxCollider>();
-        bc.center = new Vector3(10, 0, 0);
-        bc.size = new Vector3(120, 70, 80);
+        // use simple collider instead of mesh to avoid extra cpu use
+        bc.center = new Vector3(10, 0, 0);//approximately
+        bc.size = new Vector3(120, 70, 80);//approximately
 
-        updateRise();
+        camera = Camera.main;
+
+        resetTransform();
     }
 
     // Update is called once per frame
@@ -35,7 +36,7 @@ public class PlaneControl : MonoBehaviour {
 
         switch (Aviator.status) {
             case AviatorStates.Start:
-                updateRise();
+                resetTransform();
                 break;
             case AviatorStates.Flying:
                 updateFlying();
@@ -47,20 +48,12 @@ public class PlaneControl : MonoBehaviour {
 
     }
 
-    float normalize(float v, float vmin, float vmax, float tmin, float tmax)
-    {
-        var nv = Mathf.Clamp(v, vmin, vmax);
-        var pc = (nv - vmin) / (vmax - vmin);
-        var dt = tmax - tmin;
-        var tv = tmin + (pc * dt);
-        return tv;
-    }
     void updateFlying()
     {
 
         // boundaries
-        float targetY = normalize(Aviator.mousePos.y, -.75f, .75f, Aviator.planeDefaultHeight - Aviator.planeAmpHeight, Aviator.planeDefaultHeight + Aviator.planeAmpHeight);
-        float targetX = normalize(Aviator.mousePos.x, -1f, 1f, -Aviator.planeAmpWidth * .7f, -Aviator.planeAmpWidth);
+        float targetY = Aviator.normalize(Aviator.mousePos.y, -.75f, .75f, Aviator.planeDefaultHeight - Aviator.planeAmpHeight, Aviator.planeDefaultHeight + Aviator.planeAmpHeight);
+        float targetX = Aviator.normalize(Aviator.mousePos.x, -1f, 1f, -Aviator.planeAmpWidth * .7f, -Aviator.planeAmpWidth);
 
         float horizontal = targetX - transform.position.x;
         float vertical = targetY - transform.position.y;
@@ -76,13 +69,22 @@ public class PlaneControl : MonoBehaviour {
             transform.position
         );
 
+        updateCamera();
     }
 
-    #region public methods
-    public void updateRise()
+    void updateCamera()
     {
-        rb.useGravity = false;
+        camera.fieldOfView = Aviator.normalize(Aviator.mousePos.x, -1, 1, 40, 60);
+        camera.ResetProjectionMatrix();
+        camera.transform.position += Vector3.up * ((transform.position.y - camera.transform.position.y) * Aviator.cameraSensivity * Time.deltaTime);
+    }
+
+    void resetTransform()
+    {
+        // so it will always stay on the same plane to be able to hit stones and coins;
+        rb.constraints = RigidbodyConstraints.FreezePositionZ;
         rb.velocity = Vector3.zero;
+
         transform.position = new Vector3(
             -Aviator.planeAmpWidth,
             -Aviator.planeDefaultHeight,
@@ -91,7 +93,7 @@ public class PlaneControl : MonoBehaviour {
         transform.rotation = Quaternion.identity;
     }
 
-    public void updateFall()
+    void updateFall()
     {
         if (transform.position.y <= -Aviator.planeDefaultHeight) {
             Aviator.status = AviatorStates.Start;
@@ -101,8 +103,9 @@ public class PlaneControl : MonoBehaviour {
                 Quaternion.Euler(20, 20, -45),
                 Time.deltaTime * 2
             );
+            rb.constraints = RigidbodyConstraints.FreezePositionX;
             rb.AddForce(Vector3.down * 200, ForceMode.Force);
         }
     }
-    #endregion
+
 }

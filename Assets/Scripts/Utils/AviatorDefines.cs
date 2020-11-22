@@ -49,68 +49,69 @@ public struct AviatorColors {
 public struct Aviator {
     //mouse control or touch control
     public static Vector2 mousePos;
-
-    public static int SpinningSpeed;
+    public static float scaler = 25;
 
     //below is original project vars
     #region initial game data
-    public static int speed = 0;
-    public static float initSpeed = .00035f;
-    public static float baseSpeed = .00035f;
-    public static float targetBaseSpeed = .00035f;
-    public static float incrementSpeedByTime = .0000025f;
-    public static float incrementSpeedByLevel = .000005f;
-    public static float distanceForSpeedUpdate = 100f;
-    public static float speedLastUpdate = 0f;
+    public static float speed;
+    public const float initSpeed = 7f;
+    public static float baseSpeed;
+    public static float targetBaseSpeed;
+    public const float incrementSpeedByTime = .5f;//.05f;
+    public const float incrementSpeedByLevel = 1f;//.1f;
+    public const int distanceForSpeedUpdate = 100;
+    public static float speedLastUpdate;
 
-    public static int distance;
-    public static float ratioSpeedDistance = 50;
-    public static int energy;
-    public static int ratioSpeedEnergy = 3;
+    public static float distance;
+    public const int ratioSpeedDistance = 3; // 50
+
+    public static float energy;
+    public const float ratioSpeedEnergy = .3f;// 3;
 
     public static int level;
-    public static int levelLastUpdate = 0;
-    public static int distanceForLevelUpdate = 1000;
+    public static float levelLastUpdate;
+    public const int distanceForLevelUpdate = 1000;
 
-    public static float planeDefaultHeight = 100;
-    public static float planeAmpHeight = 80;
-    public static float planeAmpWidth = 75;
-    public static float planeMoveSensivity;
-    public static float planeRotXSensivity = 0.0008f;
-    public static float planeRotZSensivity;
-    public static float planeFallSpeed = .001f;
-    public static float planeMinSpeed = 1.2f;
-    public static float planeMaxSpeed = 1.6f;
-    public static float planeSpeed = 0;
-    public static float planeCollisionDisplacementX = 0;
-    public static float planeCollisionSpeedX = 0;
+    public const float planeDefaultHeight = 100;
+    public const float planeAmpHeight = 80;
+    public const float planeAmpWidth = 75;
+    public const float planeMoveSensivity = 2f;
+    // public static float planeRotXSensivity;
+    // public static float planeRotZSensivity;
 
-    public static float planeCollisionDisplacementY = 0;
-    public static float planeCollisionSpeedY = 0;
+    // public static float planeFallSpeed;
+    public const float planeMinSpeed = 1.2f;
+    public const float planeMaxSpeed = 1.6f;
+    public static float planeSpeed; // only dependent on mousePos.x; clamp between planeMinSpeed & planeMaxSpeed
+    // public static float planeCollisionDisplacementX;
+    // public static float planeCollisionSpeedX;
 
-    public static int seaRadius;
-    public static int seaLength;
-    public static float seaRotationSpeed = 0.006f;
-    public static float wavesMinAmp = 5f;
-    public static float wavesMaxAmp = 20f;
-    public static float wavesMinSpeed = 0.001f;
-    public static float wavesMaxSpeed = 0.003f;
+    // public static float planeCollisionDisplacementY;
+    // public static float planeCollisionSpeedY;
 
-    public static float cameraFarPos = 500;
-    public static float cameraNearPos = 150;
-    public static float cameraSensivity = 0.002f;
+    public const int seaRadius = 600;
+    public const int seaLength = 800;
+    public const float seaRotationSpeed = 0.006f;
+    public const float wavesMinAmp = 5f;
+    public const float wavesMaxAmp = 20f;
+    public const float wavesMinSpeed = 0.001f;
+    public const float wavesMaxSpeed = 0.003f;
 
-    public static float coinDistanceTolerance = 15;
-    public static int coinValue = 3;
-    public static float coinsSpeed = .5f;
-    public static float coinLastSpawn = 0;
-    public static float distanceForCoinsSpawn = 100;
+    // public const float cameraFarPos = 500;
+    // public const float cameraNearPos = 150;
+    public const float cameraSensivity = 0.002f;
 
-    public static float ennemyDistanceTolerance = 10;
-    public static int ennemyValue = 10;
-    public static float ennemiesSpeed = .6f;
-    public static float ennemyLastSpawn = 0;
-    public static float distanceForEnnemiesSpawn = 50;
+    // public static float coinDistanceTolerance;
+    const int coinValue = 3;
+    // public static float coinsSpeed;
+    // public static float coinLastSpawn;
+    // public static float distanceForCoinsSpawn;
+
+    // // public static float ennemyDistanceTolerance;
+    const int ennemyValue = 10;
+    // public static float ennemiesSpeed;
+    // public static float ennemyLastSpawn;
+    // public static float distanceForEnnemiesSpawn;
 
     public static AviatorStates status;
     #endregion
@@ -118,67 +119,48 @@ public struct Aviator {
     public static void reset()
     {
         mousePos = Vector2.zero;
-        SpinningSpeed = 20;
 
-        speed = 0;
-        initSpeed = .00035f;
-        baseSpeed = .00035f;
-        targetBaseSpeed = .00035f;
-        incrementSpeedByTime = .0000025f;
-        incrementSpeedByLevel = .000005f;
-        distanceForSpeedUpdate = 100f;
-        speedLastUpdate = 0f;
+        speed = 0f;
+        baseSpeed = initSpeed;
+        targetBaseSpeed = initSpeed;
+        speedLastUpdate = 1f;
 
-        distance = 0;
-        ratioSpeedDistance = 50;
-        energy = 100;
-        ratioSpeedEnergy = 3;
+        distance = 0f;
+        energy = 100f;
 
         level = 1;
-        levelLastUpdate = 0;
-        distanceForLevelUpdate = 1000;
+        levelLastUpdate = 1f;
 
-        planeDefaultHeight = 100;
-        planeAmpHeight = 80;
-        planeAmpWidth = 75;
-        planeMoveSensivity = 2f;
-        planeRotXSensivity = 0.0008f;
-        planeRotZSensivity = 0.5f;
-        planeFallSpeed = .001f;
-        planeMinSpeed = 1.2f;
-        planeMaxSpeed = 1.6f;
-        planeSpeed = 0;
-        planeCollisionDisplacementX = 0;
-        planeCollisionSpeedX = 0;
+        planeSpeed = planeMinSpeed;
 
-        planeCollisionDisplacementY = 0;
-        planeCollisionSpeedY = 0;
+        // coinsSpeed = .5f;
+        // coinLastSpawn = 0;
+        // distanceForCoinsSpawn = 100;
 
-        seaRadius = 600;
-        seaLength = 800;
-        seaRotationSpeed = 0.006f;
-        wavesMinAmp = 5f;
-        wavesMaxAmp = 20f;
-        wavesMinSpeed = 0.001f;
-        wavesMaxSpeed = 0.003f;
-
-        cameraFarPos = 500;
-        cameraNearPos = 150;
-        cameraSensivity = 0.002f;
-
-        coinDistanceTolerance = 15;
-        coinValue = 3;
-        coinsSpeed = .5f;
-        coinLastSpawn = 0;
-        distanceForCoinsSpawn = 100;
-
-        ennemyDistanceTolerance = 10;
-        ennemyValue = 10;
-        ennemiesSpeed = .6f;
-        ennemyLastSpawn = 0;
-        distanceForEnnemiesSpawn = 50;
+        // ennemiesSpeed = .6f;
+        // ennemyLastSpawn = 0;
+        // distanceForEnnemiesSpawn = 50;
 
         status = AviatorStates.Start;
     }
 
+    public static void addEnergy()
+    {
+        energy += coinValue;
+        energy = Mathf.Min(energy, 100);
+    }
+
+    public static void removeEnergy()
+    {
+        energy -= ennemyValue;
+        energy = Mathf.Max(0, energy);
+    }
+    public static float normalize(float v, float vmin, float vmax, float tmin, float tmax)
+    {
+        float nv = Mathf.Clamp(v, vmin, vmax);
+        float pc = (nv - vmin) / (vmax - vmin);
+        float dt = tmax - tmin;
+        float tv = tmin + (pc * dt);
+        return tv;
+    }
 }

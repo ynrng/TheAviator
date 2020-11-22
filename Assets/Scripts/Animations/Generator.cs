@@ -50,7 +50,7 @@ public class Generator : MonoBehaviour {
             // GameObject parent = new GameObject("Cloud");
             // var stepAngle = Math.PI * 2 / 20;
             float x = Aviator.seaRadius + 150 + Random.Range(0f, 200f); // 100-250
-            float z = 100 + Random.Range(0f, Aviator.seaLength);//200-400
+            float z = 100 + Random.Range(0, 600);//100-790
             float y = -Aviator.seaRadius;
             float scale = (1 + Random.Range(0, 1f)) * 20;
             for (int i = 0; i < 3 + Random.Range(0, 3); i++) {

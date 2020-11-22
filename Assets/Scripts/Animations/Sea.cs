@@ -24,8 +24,7 @@ struct Wave {
 [RequireComponent(typeof(MeshFilter), typeof(DrawCylinder))]
 public class Sea : MonoBehaviour {
     Mesh mesh;
-    Vector3[] verticesOrigin;
-    public List<Vector3> vertices;
+    Vector3[] vertices;
     List<int>[] points;
     List<Wave> waves = new List<Wave>();
 
@@ -33,8 +32,7 @@ public class Sea : MonoBehaviour {
     void Start()
     {
         mesh = gameObject.GetComponent<MeshFilter>().mesh;
-        verticesOrigin = mesh.vertices;
-        vertices = verticesOrigin.ToList();
+        vertices = mesh.vertices;
         DrawCylinder cylinder = gameObject.GetComponent<DrawCylinder>();
         points = cylinder.groupSamePoint();
         for (int i = 0; i < points.Length; i++) {
@@ -67,12 +65,12 @@ public class Sea : MonoBehaviour {
             // increment the angle for the next frame
             wave.ang += wave.speed;
             waves[i] = wave;
-
         }
         // mesh.Clear();
-        mesh.vertices = vertices.ToArray();
+        mesh.vertices = vertices;
         mesh.RecalculateNormals();
 
-        gameObject.transform.Rotate(Vector3.down * Aviator.SpinningSpeed * Time.deltaTime);// .005;
+        gameObject.transform.Rotate(Vector3.down * Aviator.speed);// .005;* Time.deltaTime
+        //   sea.mesh.rotation.z += game.speed * deltaTime;//*game.seaRotationSpeed;
     }
 }

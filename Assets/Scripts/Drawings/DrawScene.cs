@@ -9,8 +9,6 @@ public class DrawScene : MonoBehaviour {
     public bool useFog = true;
     void Start()
     {
-        // SceneView.sceneViews.
-        // Scene scene = SceneManager.GetActiveScene();
 
         //fog
         if (useFog) {
@@ -24,17 +22,17 @@ public class DrawScene : MonoBehaviour {
         QualitySettings.shadowDistance = 1500;
         QualitySettings.antiAliasing = 8;
 
-        Camera camera = gameObject.GetComponent<Camera>();
+        Camera camera = Camera.main;
 
-        // if (camera) {
-        camera.fieldOfView = 50;
-        camera.nearClipPlane = .1f;
-        camera.farClipPlane = 1000;
-        camera.orthographic = false;
-        camera.clearFlags = CameraClearFlags.SolidColor;
-        camera.backgroundColor = Color.clear;
-        camera.transform.position = new Vector3(0, Aviator.planeDefaultHeight, -200); // coordinate system diff
-        // }
+        if (camera) {
+            camera.fieldOfView = 50;
+            camera.nearClipPlane = .1f;
+            camera.farClipPlane = 1000;
+            camera.orthographic = false;
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = Color.clear;
+            camera.transform.position = new Vector3(0, Aviator.planeDefaultHeight, -200); // coordinate system diff
+        }
 
         // 	// Activate the anti-aliasing; this is less performant,
         // 	// but, as our project is low-poly based, it should be fine :)
@@ -46,41 +44,6 @@ public class DrawScene : MonoBehaviour {
         // // Listen to the screen: if the user resizes it
         // // we have to update the camera and the renderer size
         // window.addEventListener('resize', handleWindowResize, false);
-    }
-
-    // Update is called once per frame
-
-    void Update()
-    {
-
-        onResize();
-        onMouseMove();
-        onTouchMove();
-        onMouseUp();
-        onTouchEnd();
-    }
-
-    //TODO
-    void onResize()
-    {
-
-    }
-
-    void onMouseMove()
-    {
-
-    }
-    void onTouchMove()
-    {
-
-    }
-    void onMouseUp()
-    {
-
-    }
-    void onTouchEnd()
-    {
-
     }
 
 }

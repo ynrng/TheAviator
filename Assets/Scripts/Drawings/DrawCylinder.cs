@@ -8,12 +8,8 @@ public class DrawCylinder : MonoBehaviour {
     // how many segments do we want in between;
     public int segmentsHeight = 1; //
     public int segmentsRadial = 3;
-    // public bool addStandardMaterial = true;
-
     public bool isDiscrete = true; // TODO continuous
-    int stepH = 1;
     int radiusRound = 1;
-
     List<Vector3> vertices;
     List<int> triangles;
 
@@ -22,14 +18,8 @@ public class DrawCylinder : MonoBehaviour {
     {
         makeMeshData();
         createMesh();
-
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     public List<int>[] groupSamePoint()
     {
         List<int>[] points = new List<int>[(segmentsHeight + 1) * segmentsRadial];

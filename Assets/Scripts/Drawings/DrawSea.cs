@@ -5,12 +5,13 @@ using UnityEngine.Rendering;
 
 public class DrawSea : MonoBehaviour {
     // Start is called before the first frame update
-    // GameObject parent;
+    GameObject sea;
+
     void Start()
     {
 
         createSky();
-        createSea();
+        sea = createSea();
 
     }
 
@@ -27,7 +28,7 @@ public class DrawSea : MonoBehaviour {
         // Mesh meshCube =  PrimitiveHelper.GetPrimitiveMesh(PrimitiveType.Cube);
 
         skyGo.transform.position = new Vector3(0, 100, 790);
-        skyGo.transform.localScale = new Vector3(1700, 1000, 1);
+        skyGo.transform.localScale = new Vector3(1700, 1200, 1);
         skyGo.transform.parent = gameObject.transform;
 
         //9) Give it a Material
@@ -39,6 +40,8 @@ public class DrawSea : MonoBehaviour {
         skyMr.material = skyMa;
         skyMr.shadowCastingMode = ShadowCastingMode.Off;
         skyMr.receiveShadows = false;
+
+        skyGo.isStatic = true;
 
         return skyGo;
     }

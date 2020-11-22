@@ -7,7 +7,6 @@ public class InputManager : MonoBehaviour, SimpleControls.IGameplayActions {
     public SimpleControls controls;
     private void Awake()
     {
-        Aviator.reset();
         controls = new SimpleControls();
         controls.gameplay.SetCallbacks(this);
     }
@@ -30,7 +29,6 @@ public class InputManager : MonoBehaviour, SimpleControls.IGameplayActions {
         Vector2 original = context.ReadValue<Vector2>();
         Aviator.mousePos = new Vector2(2f * original.x / Screen.width - 1, 2f * original.y / Screen.height - 1);
         print("OnMove" + Aviator.mousePos);
-        // print(Aviator.mousePos);
     }
 
     public void OnFire(InputAction.CallbackContext context)
