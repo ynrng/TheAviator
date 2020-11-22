@@ -35,7 +35,7 @@ public class InputManager : MonoBehaviour, SimpleControls.IGameplayActions {
 
     public void OnFire(InputAction.CallbackContext context)
     {
-        // todo check if onfire be called twice
+        // TODO check if onfire be called twice
         if (Aviator.status == AviatorStates.Start) {
             Aviator.reset();
             print("OnFire" + Aviator.mousePos);

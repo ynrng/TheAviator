@@ -9,16 +9,6 @@ using Internal = UnityEngine.Internal;
 
 public static class PrimitiveHelper {
     private static Dictionary<PrimitiveType, Mesh> primitiveMeshes = new Dictionary<PrimitiveType, Mesh>();
-    private static Material materialStandard = new Material(Shader.Find("Standard"));
-
-    public static Material GetMaterialStandard()
-    {
-        // if (materialStandard) {
-        //     materialStandard = new Material(Shader.Find("Standard"));
-        // }
-        return materialStandard;
-    }
-
     public static GameObject CreatePrimitive(PrimitiveType type, bool withCollider)
     {
         return CreatePrimitive(type, withCollider, string.Empty);
@@ -48,7 +38,7 @@ public static class PrimitiveHelper {
     public static Material SetMaterialTransparent(Material seaMa)
     {
 
-        // todo should Material be saved for future use;
+        // TODO should Material be saved for future use;
 
         // [ref](https://docs.unity3d.com/2019.4/Documentation/Manual/StandardShaderMaterialParameterRenderingMode.html)
         #region set rendering mode to transparent

@@ -25,14 +25,15 @@ public struct AviatorColors {
     public static Color Sky = GetColor("0xe4e0ba");
     public static Color Fog = GetColor("0xf7d9aa");
     public static Color Light = GetColor("0xdc887480");
-
     public static Color Red = GetColor("0xf25346");
     public static Color White = GetColor("0xd8d0d1");
     public static Color WhiteTransparent = GetColor("0xd8d0d14d");
     public static Color Brown = GetColor("0x59332e");
     public static Color Pink = GetColor("0xF5986E");
     public static Color BrownDark = GetColor("0x23190f");
+    public static Color Green = GetColor("0x009999");
     public static Color Blue = GetColor("0x68c3c0cc"); //opacity 0.8
+
     private static Color GetColor(string hex)
     {
         hex = hex.PadRight(10, 'f');

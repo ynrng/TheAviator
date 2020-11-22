@@ -10,7 +10,7 @@ public class DrawCylinder : MonoBehaviour {
     public int segmentsRadial = 3;
     // public bool addStandardMaterial = true;
 
-    public bool isDiscrete = true; // todo continuous
+    public bool isDiscrete = true; // TODO continuous
     int stepH = 1;
     int radiusRound = 1;
 

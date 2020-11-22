@@ -60,7 +60,7 @@ public class DrawScene : MonoBehaviour {
         onTouchEnd();
     }
 
-    //todo
+    //TODO
     void onResize()
     {
 

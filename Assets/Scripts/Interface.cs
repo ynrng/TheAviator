@@ -7,7 +7,6 @@ using System.Linq;
 
 public class Interface : MonoBehaviour
 {
-
     private Text texts;
     StringBuilder text = new StringBuilder();
     bool needUpdate = false;
@@ -33,21 +32,6 @@ public class Interface : MonoBehaviour
         }
         texts.text = text.ToString();
 
-        // if (Aviator.status == AviatorStates.Start) {
-
-        //     // generator.startCoroutines();
-
-        //     // new WaitForSeconds(1);
-
-        //     Aviator.status = AviatorStates.Rising;
-
-        //     // plane.rise();
-        // }
-        // if (Aviator.status == AviatorStates.Flying && Aviator.energy <= 0) {
-        //     Aviator.status = AviatorStates.Falling;
-        //     // generator.stopCoroutines();
-        //     // plane.fall();
-        // }
     }
 
     void buildString()

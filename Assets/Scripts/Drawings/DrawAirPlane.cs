@@ -73,7 +73,8 @@ public class DrawAirPlane : MonoBehaviour {
 
         // Material: assign color
         Material engineMa = propeller.GetComponent<MeshRenderer>().material;
-        engineMa.SetColor("_Color", AviatorColors.Brown);
+        // engineMa.SetColor("_Color", AviatorColors.Brown);
+        engineMa.color = AviatorColors.Brown;
 
         propeller.transform.localScale = new Vector3(20, 10, 10);
         // engineGo.transform.position = position;
