@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Generator : MonoBehaviour {
+public class DrawCloud : MonoBehaviour {
 
     public GameObject[] prefebsNone = new GameObject[1];
     public GameObject[] prefebsCoin = new GameObject[1];
