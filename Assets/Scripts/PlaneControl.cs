@@ -1,6 +1,4 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]// required component on the gameObject
 public class PlaneControl : MonoBehaviour {

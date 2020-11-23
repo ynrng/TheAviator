@@ -5,7 +5,6 @@ of https://answers.unity.com/questions/514293/changing-a-gameobjects-primitive-m
 
 using System.Collections.Generic;
 using UnityEngine;
-using Internal = UnityEngine.Internal;
 
 public static class PrimitiveHelper {
     private static Dictionary<PrimitiveType, Mesh> primitiveMeshes = new Dictionary<PrimitiveType, Mesh>();

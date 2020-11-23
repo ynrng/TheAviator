@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using UnityEngine;
-using UnityEngine.Assertions.Comparers;
 
 // public class AviatorDefines {
 public enum AviatorStates : byte {

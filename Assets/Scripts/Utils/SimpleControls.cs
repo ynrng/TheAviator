@@ -139,7 +139,7 @@ public class @SimpleControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""824d5836-d0fd-4b4e-9c83-f4a36dd1a78a"",
                     ""path"": ""<Touchscreen>/position"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""move"",

@@ -1,6 +1,5 @@
 ﻿
 using UnityEngine;
-// using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 

@@ -1,6 +1,4 @@
-﻿
-using UnityEditor.IMGUI.Controls;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlaneSpin : MonoBehaviour
 {
