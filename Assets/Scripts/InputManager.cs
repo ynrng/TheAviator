@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 // Use a separate InputControl component for setting up input.
-public class InputManager : MonoBehaviour, SimpleControls.IGameplayActions {
+public class InputManager : MonoSingleton<InputManager>, SimpleControls.IGameplayActions {
     public SimpleControls controls;
     private void Awake()
     {
