@@ -7,7 +7,7 @@ public class DrawCylinder : MonoBehaviour {
     // how many segments do we want in between;
     public int segmentsHeight = 1; //
     public int segmentsRadial = 3;
-    public bool isDiscrete = true; // TODO continuous
+    public bool isDiscrete = false;
     int radiusRound = 1;
     List<Vector3> vertices;
     List<int> triangles;
@@ -73,30 +73,66 @@ public class DrawCylinder : MonoBehaviour {
         //add back origin point so in for loop it dose not overflow
         xzs.Add(new Vector3(Mathf.Cos(0), 0, Mathf.Sin(0)) * radiusRound);
 
-        //
-        //start generation
-        vertices = new List<Vector3>();
-        //faces: basicly from 0 to segmentsHeight*segmentsRound-1
-        triangles = Enumerable.Range(0, (segmentsHeight * segmentsRadial) * 6).ToList();
+        if (isDiscrete) {
+            //
+            //start generation
+            vertices = new List<Vector3>();
+            //faces: basicly from 0 to segmentsHeight*segmentsRound-1
+            triangles = Enumerable.Range(0, (segmentsHeight * segmentsRadial) * 6).ToList();
 
-        // only need to generate side
-        for (int j = 0; j < segmentsHeight; j++) {
-            for (int i = 0; i < segmentsRadial; i++) {
-                //order matters
-                //points
-                vertices.Add(xzs[i] + Vector3.up * (j + tranferToCenterY));
-                vertices.Add(xzs[i + 1] + Vector3.up * (j + 1 + tranferToCenterY));
-                vertices.Add(xzs[i + 1] + Vector3.up * (j + tranferToCenterY));
+            // only need to generate side
+            for (int j = 0; j < segmentsHeight; j++) {
+                for (int i = 0; i < segmentsRadial; i++) {
+                    //order matters
+                    //points
+                    vertices.Add(xzs[i] + Vector3.up * (j + tranferToCenterY));
+                    vertices.Add(xzs[i + 1] + Vector3.up * (j + 1 + tranferToCenterY));
+                    vertices.Add(xzs[i + 1] + Vector3.up * (j + tranferToCenterY));
 
-                vertices.Add(xzs[i] + Vector3.up * (j + tranferToCenterY));
-                vertices.Add(xzs[i] + Vector3.up * (j + 1 + tranferToCenterY));
-                vertices.Add(xzs[i + 1] + Vector3.up * (j + 1 + tranferToCenterY));
+                    vertices.Add(xzs[i] + Vector3.up * (j + tranferToCenterY));
+                    vertices.Add(xzs[i] + Vector3.up * (j + 1 + tranferToCenterY));
+                    vertices.Add(xzs[i + 1] + Vector3.up * (j + 1 + tranferToCenterY));
 
-                // int start = segmentsRound * j + i;
-                // triangles.AddRange(Enumerable.Range(start * 3, 3));
+                    // int start = segmentsRound * j + i;
+                    // triangles.AddRange(Enumerable.Range(start * 3, 3));
+                }
+
+            }
+        } else {
+            //
+            //start generation
+            vertices = new List<Vector3>();
+            // vertices.AddRange(xzs);
+            //faces: basicly from 0 to segmentsHeight*segmentsRound-1
+            triangles = new List<int>();
+
+            // only need to generate side
+            for (int j = 0; j < segmentsHeight + 1; j++) {
+                for (int i = 0; i < segmentsRadial; i++) {
+                    //points, order matters
+                    vertices.Add(xzs[i] + Vector3.up * (j + tranferToCenterY));
+                }
             }
 
+            // only need to generate side
+            for (int j = 0; j < segmentsHeight; j++) {
+                for (int i = 0; i < segmentsRadial; i++) {
+                    //points. order matters
+                    int indexk = j * segmentsRadial;
+                    int iplus1 = (i + 1) % segmentsRadial; //for the last quad to reconnect to the 1st
+
+                    triangles.Add(indexk + i);
+                    triangles.Add(indexk + i + segmentsRadial);
+                    triangles.Add(indexk + iplus1);//i + 1
+
+                    triangles.Add(indexk + iplus1);
+                    triangles.Add(indexk + i + segmentsRadial);
+                    triangles.Add(indexk + iplus1 + segmentsRadial);
+                }
+
+            }
         }
+
     }
 
     void createMesh()

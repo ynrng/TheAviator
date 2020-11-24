@@ -113,8 +113,7 @@ public class DrawCloud : MonoBehaviour {
         }
     }
 
-    #region public methods
-    public void stopCoroutines()
+    void stopCoroutines()
     {
         for (int i = 1; i < ienums.Length; i++) {
             StopCoroutine(ienums[i]);
@@ -123,7 +122,7 @@ public class DrawCloud : MonoBehaviour {
         isCoroutineRunning = false;
     }
 
-    public void startCoroutines()
+    void startCoroutines()
     {
         for (int i = 1; i < ienums.Length; i++) {
             StartCoroutine(ienums[i]);
@@ -131,6 +130,5 @@ public class DrawCloud : MonoBehaviour {
 
         isCoroutineRunning = true;
     }
-    #endregion
 
 }

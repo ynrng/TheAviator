@@ -23,7 +23,7 @@ struct Wave {
 [RequireComponent(typeof(MeshFilter), typeof(DrawCylinder))]
 public class Sea : MonoBehaviour {
     Mesh mesh;
-    Vector3[] vertices;
+    public Vector3[] vertices;
     List<int>[] points;
     List<Wave> waves = new List<Wave>();
 
@@ -33,9 +33,17 @@ public class Sea : MonoBehaviour {
         mesh = gameObject.GetComponent<MeshFilter>().mesh;
         vertices = mesh.vertices;
         DrawCylinder cylinder = gameObject.GetComponent<DrawCylinder>();
-        points = cylinder.groupSamePoint();
-        for (int i = 0; i < points.Length; i++) {
-            waves.Add(new Wave(vertices[points[i][0]]));
+
+        if (cylinder.isDiscrete) {
+            points = cylinder.groupSamePoint();
+            for (int i = 0; i < points.Length; i++) {
+                waves.Add(new Wave(vertices[points[i][0]]));
+            }
+        } else {
+
+            for (int i = 0; i < vertices.Length; i++) {
+                waves.Add(new Wave(vertices[i]));
+            }
         }
 
     }
@@ -43,9 +51,40 @@ public class Sea : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        moveWave();
-    }
+        if (points != null) {
+            moveWave();
+        } else {
+            moveWaveCon();
+        }
 
+    }
+    void moveWaveCon()
+    {
+        print("moveWaveCon");
+
+        for (int i = 0; i < vertices.Length; i++) {
+            Wave wave = waves[i];
+            vertices[i] = new Vector3(wave.x + Mathf.Cos(wave.ang) * wave.amp, //wave range
+                                        wave.y,
+                                        wave.z + Mathf.Sin(wave.ang) * wave.amp //wave height
+                                            );
+            // for (int j = 0; j < points[i].Count; j++) {
+            //     int index = points[i][j];
+            // update the position of the vertex
+            // vertices[i] = pos;
+
+            // }
+            // increment the angle for the next frame
+            wave.ang += wave.speed;
+            waves[i] = wave;
+        }
+        // mesh.Clear();
+        mesh.vertices = vertices;
+        mesh.RecalculateNormals();
+
+        gameObject.transform.Rotate(Vector3.down * Aviator.speed);// .005;* Time.deltaTime
+        //   sea.mesh.rotation.z += game.speed * deltaTime;//*game.seaRotationSpeed;
+    }
     void moveWave()
     {
 
