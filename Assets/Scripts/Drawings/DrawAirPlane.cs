@@ -21,7 +21,7 @@ public class DrawAirPlane : MonoBehaviour {
         parent.transform.parent = gameObject.transform;
 
         createCabin();
-        // createCubeWithName("Cabin", new Vector3(60, 50, 50), Vector3.zero, AviatorColors.Red);
+        // createCubeWithName("Cabin", new Vector3(80, 50, 50), Vector3.zero, AviatorColors.Red);
         createCubeWithName("Engine", new Vector3(20, 50, 50), Vector3.right * 50, AviatorColors.White);
         createCubeWithName("Tail", new Vector3(15, 20, 5), new Vector3(-40, 20, 0), AviatorColors.Red);
         createCubeWithName("SideWing", new Vector3(30, 5, 120), Vector3.up * 15, AviatorColors.Red);

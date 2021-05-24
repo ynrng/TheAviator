@@ -19,25 +19,25 @@ public enum BlendMode {
 
 public struct AviatorColors {
     // background: linear-gradient(#e4e0ba, #f7d9aa);
-    public static Color Sky = GetColor("0xe4e0ba");
-    public static Color Fog = GetColor("0xf7d9aa");
-    public static Color Light = GetColor("0xdc887480");
-    public static Color Red = GetColor("0xf25346");
-    public static Color White = GetColor("0xd8d0d1");
-    public static Color WhiteTransparent = GetColor("0xd8d0d14d");
-    public static Color Brown = GetColor("0x59332e");
-    public static Color Pink = GetColor("0xF5986E");
-    public static Color BrownDark = GetColor("0x23190f");
-    public static Color Green = GetColor("0x009999");
-    public static Color Blue = GetColor("0x68c3c0cc"); //opacity 0.8
+    public static Color Sky = GetColor("#e4e0ba");
+    public static Color Fog = GetColor("#f7d9aa");
+    public static Color Light = GetColor("#dc887480");
+    public static Color Red = GetColor("#f25346");
+    public static Color White = GetColor("#d8d0d1");
+    public static Color WhiteTransparent = GetColor("#d8d0d14d");
+    public static Color Brown = GetColor("#59332e");
+    public static Color Pink = GetColor("#F5986E");
+    public static Color BrownDark = GetColor("#23190f");
+    public static Color Green = GetColor("#009999");
+    public static Color Blue = GetColor("#68c3c0cc"); //opacity 0.8
 
     private static Color GetColor(string hex)
     {
-        hex = hex.PadRight(10, 'f');
-        return new Color(r: Convert.ToInt32(hex.Substring(2, 2), 16) / 255f,
-        g: Convert.ToInt32(hex.Substring(4, 2), 16) / 255f,
-        b: Convert.ToInt32(hex.Substring(6, 2), 16) / 255f,
-        a: Convert.ToInt32(hex.Substring(8, 2), 16) / 255f
+        hex = hex.PadRight(9, 'f');
+        return new Color(r: Convert.ToInt32(hex.Substring(1, 2), 16) / 255f,
+        g: Convert.ToInt32(hex.Substring(3, 2), 16) / 255f,
+        b: Convert.ToInt32(hex.Substring(5, 2), 16) / 255f,
+        a: Convert.ToInt32(hex.Substring(7, 2), 16) / 255f
         );
     }
 
